@@ -9,3 +9,5 @@ Requirements
 stand alone functionality - doesn't require login
 - bill splitter
 - debt simplifier that includes bill splitter
+
+- convert to mobile map using capacitor?
