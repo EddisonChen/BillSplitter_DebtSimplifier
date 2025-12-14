@@ -74,6 +74,13 @@ const BillSplitter = ({parties}) => {
         setEditItemMode(!editItemMode);
     }
 
+    const handleRemoveItem = (event) => {
+        const id = event.target.value;
+        const updatedItems = items.filter(item => item.itemId !== id);
+        setItems(updatedItems);
+    }
+    
+
     const showItems = itemsWithCalculations.map((item) => (
         <tr key={item.itemId}>
             <td onClick={toggleEditMode}>{item.itemName}</td>
@@ -89,6 +96,7 @@ const BillSplitter = ({parties}) => {
                 itemId={item.itemId}
                 />
                 }
+            <button onClick={handleRemoveItem} value={item.itemId}>Remove Item</button>
         </tr>
 
     ));
@@ -161,7 +169,7 @@ const BillSplitter = ({parties}) => {
         }
 
         calculateFinalItemCost();
-        
+
     }, [taxInput, taxInputType, tipInput, items, tipAfterTax]);
 
     useEffect(() => {
@@ -182,6 +190,7 @@ const BillSplitter = ({parties}) => {
                         const splitItemCost = itemsWithCalculations[j].totalCost/itemsWithCalculations[j].involvedParties.length;
                         partyCentric[i].amountOwed += splitItemCost;
                         partyCentric[i].items.push({
+                            itemId:itemsWithCalculations[j].itemId,
                             itemName: itemsWithCalculations[j].itemName,
                             amountOwedOnItem: splitItemCost,
                             splitWith: itemsWithCalculations[j].involvedParties.filter((party)=> (party !== partyCentric[i].debtor)),

@@ -48,8 +48,6 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
             setQuantity(100);
         }
     }
-
-    console.log(quantity)
     
     // Updates item name/cost according on input
     const handleItemInput = (event) => {
@@ -109,20 +107,20 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
         };
             setItems(items => [...items, itemObject]);
         } else {
-            const itemsCopy = structuredClone(items);
-            for (let i=0; i<itemsCopy.length; i++) {
-                if (itemsCopy[i].itemId = itemId) {
-                    itemsCopy[i].itemName = itemName;
-                    itemsCopy[i].itemCost = itemCost*quantity;
-                    itemsCopy[i].involvedParties = involvedParties;
-                    itemsCopy[i].taxAmount = itemsCopy[i].tipAmount = itemsCopy[i].totalCost = 0;
-                    itemsCopy[i].taxExempt = taxExempt;
-                    itemsCopy[i].quantity = quantity;
-                    itemsCopy[i].singleItemValues.itemCost = itemCost;
-                    itemsCopy[i].singleItemValues.taxAmount = itemsCopy[i].singleItemValues.tipAmount = itemsCopy[i].singleItemValues.totalCost = 0;
+            const tempItems = structuredClone(items);
+            for (let i=0; i<tempItems.length; i++) {
+                if (tempItems[i].itemId = itemId) {
+                    tempItems[i].itemName = itemName;
+                    tempItems[i].itemCost = itemCost*quantity;
+                    tempItems[i].involvedParties = involvedParties;
+                    tempItems[i].taxAmount = tempItems[i].tipAmount = tempItems[i].totalCost = 0;
+                    tempItems[i].taxExempt = taxExempt;
+                    tempItems[i].quantity = quantity;
+                    tempItems[i].singleItemValues.itemCost = itemCost;
+                    tempItems[i].singleItemValues.taxAmount = tempItems[i].singleItemValues.tipAmount = tempItems[i].singleItemValues.totalCost = 0;
                 }
             }
-            setItems(itemsCopy);
+            setItems(tempItems);
             setShowModal(false);
         }
 
@@ -133,8 +131,6 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
         setTaxExempt(false);
         setQuantity(1);
     }
-
-    console.log(items)
 
     // Ensures that all fields are populated and valid, sets alert message and status
     const validateInputs = (event) => {
