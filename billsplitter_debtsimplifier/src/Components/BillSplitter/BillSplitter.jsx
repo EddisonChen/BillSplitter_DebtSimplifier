@@ -7,11 +7,13 @@ const BillSplitter = ({parties}) => {
     const [partyInput, setPartyInput] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [items, setItems] = useState([]);
+    const [itemsWithCalculations, setItemsWithCalculations] = useState();
     const [payor, setPayor] = useState();
     const [taxInputType, setTaxInputType] = useState("percentage");
     const [taxInput, setTaxInput] = useState(0);
     const [tipInput, setTipInput] = useState(0);
     const [tipAfterTax, setTipAfterTax] = useState(false);
+    const [partyInformation, setPartyInformation] = useState([])
 
     const handleTipAfterTax = () => {
         setTipAfterTax(!tipAfterTax);
@@ -29,13 +31,15 @@ const BillSplitter = ({parties}) => {
         setTipInput(Number(event.target.value)/100);
     }
 
-    if (parties !== undefined) {
-        setTempParties(...parties);
-    }
-
+    useEffect(() => {
+        if (parties !== undefined) {
+            setTempParties(parties);
+        }
+    }, [parties]);
+    
     const onPartyInputChange = (event) => {
         setPartyInput(event.target.value);
-    }
+    };
 
     const addTempParty = (event) => {
         event.preventDefault();
@@ -43,84 +47,111 @@ const BillSplitter = ({parties}) => {
             setTempParties(tempParties => [...tempParties, partyInput]);
         }
         setPartyInput("");
-    }
+    };
 
     const togglePopup = () => {
         setShowPopup(!showPopup)
-    }
-
-    const updatePaymentCalculation = () => {
-
-    }
-
-    useEffect(() => {
-        updatePaymentCalculation();
-    }, [items])
+    };
 
     const showItems = items.map((item) => (
-        <tr>
+        <tr key={item.itemName}>
             <td>{item.itemName}</td>
             <td>{item.itemCost}</td>
-            <td>{item.involvedUsers}</td>
+            <td>{item.involvedParties}</td>
         </tr>
 
     ));
 
     const handlePayor = (event) => {
         setPayor(event.target.value);
-    }
+    };
 
-    const calculateTax = () => {
-        let taxAmountperItem;
-        const temp = [...items];
-        if (taxInputType == "percentage") {
-            for (let i=0; i<temp.length; i++) {
-                taxAmountperItem = (taxInput/100)*temp[i].itemCost;
-                temp[i].taxAmount = taxAmountperItem
+    useEffect(() => {
+        const calculateTax = () => {
+            let taxAmountperItem;
+            const tempItems = [...items];
+            if (taxInputType === "percentage") {
+                for (let i=0; i<tempItems.length; i++) {
+                    taxAmountperItem = (taxInput/100)*tempItems[i].itemCost;
+                    tempItems[i].taxAmount = taxAmountperItem
+                }
+            } else if (taxInputType === "amount") {
+                let sumCost = 0;
+                for (let i=0; i<tempItems.length; i++) {
+                    sumCost += tempItems[i].itemCost
+                }
+                const tipPercentage = taxInput/sumCost;
+                for (let i=0; i<tempItems.length; i++) {
+                    taxAmountperItem = tipPercentage*tempItems[i].itemCost;
+                    tempItems[i].taxAmount = taxAmountperItem
+                }
             }
-        } else if (taxInputType == "amount") {
-            let sumCost = 0;
-            for (let i=0; i<temp.length; i++) {
-                sumCost += temp[i].itemCost
-            }
-            const tipPercentage = taxInput/sumCost;
-            for (let i=0; i<temp.length; i++) {
-                taxAmountperItem = tipPercentage*temp[i].itemCost;
-                temp[i].taxAmount = taxAmountperItem
-            }
+            return tempItems;
         }
-        setItems(temp);
-    }
 
-    const calculateTip = () => {
-        const temp = [...items];
-        for (let i=0; i<temp.length; i++) {
+    const calculateTip = (tempItems) => {
+        for (let i=0; i<tempItems.length; i++) {
             if (tipAfterTax) {
-                const costPlusTip = temp[i].itemCost + temp[i].taxAmount;
-                temp[i].tipAmount = tipInput*costPlusTip;
+                const costPlusTip = tempItems[i].itemCost + tempItems[i].taxAmount;
+                tempItems[i].tipAmount = tipInput*costPlusTip;
             } else {
-                temp[i].tipAmount = tipInput*temp[i].itemCost;
+                tempItems[i].tipAmount = tipInput*tempItems[i].itemCost;
             }
         }
-        setItems(temp);
+        return tempItems;
     }
 
-    useEffect(() => {
-        calculateTax();
-    }, [items.length, taxInput, taxInputType]);
+    const calculateFinalItemCost = () => {
+        const itemsv1 = calculateTax();
+        const itemsv2 = calculateTip(itemsv1)
+
+        for (let i=0; i<itemsv2.length; i++) {
+            itemsv2[i].totalCost = itemsv2[i].itemCost + itemsv2[i].taxAmount + itemsv2[i].tipAmount;
+        }
+        setItemsWithCalculations(itemsv2);
+    }
+    calculateFinalItemCost();
+    }, [items.length, taxInput, taxInputType, tipInput, items, tipAfterTax]);
 
     useEffect(() => {
-        calculateTip();
-    }, [items.length, taxInput, taxInputType, tipInput]);
+        const updatePaymentCalculation = () => {
+            const partyCentric = [];
+            for (let i=0; i<tempParties.length; i++) {
+                partyCentric.push({
+                    debtor: tempParties[i],
+                    amountOwed: 0,
+                    payor: payor || "Payor",
+                    items: []
+                });
+            }
+            for (let i=0; i<partyCentric.length; i++) {
+                for (let j=0; j<itemsWithCalculations.length; j++) {
+                    if (itemsWithCalculations[j].involvedParties.includes(partyCentric[i].debtor)) {
+                        const splitItemCost = itemsWithCalculations[j].totalCost/itemsWithCalculations[j].involvedParties.length;
+                        partyCentric[i].amountOwed += splitItemCost
+                        partyCentric[i].items.push({
+                            itemName: itemsWithCalculations[j].itemName,
+                            amountOwedOnItem: splitItemCost,
+                            splitWith: itemsWithCalculations[j].involvedParties.filter((party)=> (party !== partyCentric[i].debtor)),
+                        })
+                    }
+                }
+            }
+            setPartyInformation(partyCentric);
+        }
+        updatePaymentCalculation();
+    }, [itemsWithCalculations, payor, tempParties]);
+    
 
     console.log(items)
+    console.log(partyInformation)
 
     return (
         <div>
             <div>
                 {tempParties}
             </div>
-            {parties == undefined ? <div>
+            {parties === undefined ? <div>
                 <form>
                     <input type="text" placeholder="Party Name" value={partyInput} onChange={onPartyInputChange}></input>
                     <button type="submit" onClick={addTempParty}>Submit</button>
@@ -135,7 +166,7 @@ const BillSplitter = ({parties}) => {
             <div>
                 <button onClick={togglePopup}>Add Item</button>
                 {showPopup && tempParties.length>0 ? <AddItem 
-                    users={tempParties} 
+                    parties={tempParties} 
                     showPopup={showPopup} 
                     setShowPopup={setShowPopup}
                     items={items}
@@ -152,6 +183,7 @@ const BillSplitter = ({parties}) => {
                     <input type="radio" name="Tax Input Type" value="amount" onChange={handleTaxInputTypeSwitch}></input><label>Dollar Amount</label>
                 </div>            
             </div>
+            {parties && <button>Add to Debt Simplifier</button>}
             {items.length > 0 && (
                 <div>
                     <table>

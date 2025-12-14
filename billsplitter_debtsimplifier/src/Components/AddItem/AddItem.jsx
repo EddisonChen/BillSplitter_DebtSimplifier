@@ -1,32 +1,32 @@
 import { useState } from "react"
 import WarningAlert from "../../MiniComponents/Alert/Alert";
 
-const AddItem = ({users, setShowPopup, items, setItems}) => {
+const AddItem = ({parties, setShowPopup, items, setItems}) => {
 
-    const [involvedUsers, setInvolvedUsers] = useState([]);
+    const [involvedParties, setInvolvedParties] = useState([]);
     const [itemCost, setItemCost] = useState();
     const [itemName, setItemName] = useState();
     const [warning, setWarning] = useState();
     
     const handleItemInput = (event) => {
-        if (event.target.name == "itemName") {
+        if (event.target.name === "itemName") {
             setItemName(event.target.value);
-        } else if (event.target.name == "itemCost") {
+        } else if (event.target.name === "itemCost") {
             setItemCost(Number(event.target.value));
         }
     }
 
-    const addUserToItem = (event) => {
+    const addPartyToItem = (event) => {
         if (event.target.checked) {
-            setInvolvedUsers(involvedUsers => [...involvedUsers, event.target.value]);
+            setInvolvedParties(involvedParties => [...involvedParties, event.target.value]);
         } else {
-            setInvolvedUsers(involvedUsers => involvedUsers.filter(user => user !== event.target.value));
+            setInvolvedParties(involvedParties => involvedParties.filter(party => party !== event.target.value));
         }
     }
 
-    const involvedUserCheckboxes = users.map((user) => (
-        <div>
-            {user}<input type="checkbox" value={user} onChange={addUserToItem} key={user}/>
+    const involvedPartiesCheckboxes = parties.map((party) => (
+        <div key={party}>
+            <label>{party}</label><input type="checkbox" value={party} onChange={addPartyToItem}/>
         </div>
     ));
 
@@ -35,7 +35,7 @@ const AddItem = ({users, setShowPopup, items, setItems}) => {
         const itemObject = {
             itemName: itemName,
             itemCost: itemCost,
-            involvedUsers: involvedUsers,
+            involvedParties: involvedParties,
             taxAmount: 0,
             tipAmount: 0,
             totalCost: 0,
@@ -48,10 +48,10 @@ const AddItem = ({users, setShowPopup, items, setItems}) => {
 
     const validateInputs = (event) => {
         event.preventDefault();
-        if (itemCost == undefined || itemCost == "" || itemName == undefined || itemName == "") {
+        if (itemCost === undefined || itemCost === "" || itemName === undefined || itemName === "") {
             setWarning("One or more fields empty!");
-        } else if (involvedUsers.length < 1) {
-            setWarning("Please select at least one user");
+        } else if (involvedParties.length < 1) {
+            setWarning("Please select at least one party");
         } else {
             handleSubmit()
         }
@@ -63,7 +63,7 @@ const AddItem = ({users, setShowPopup, items, setItems}) => {
             <form>
                 <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput}></input>
                 <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput}></input>
-                {involvedUserCheckboxes}
+                {involvedPartiesCheckboxes}
                 <button type="submit" onClick={validateInputs}>Submit Item</button>
             </form>
             {warning && (

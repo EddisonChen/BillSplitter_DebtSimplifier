@@ -3,9 +3,11 @@ import './App.css';
 import BillSplitter from './Components/BillSplitter/BillSplitter';
 
 function App() {
+
+  const parties = ["bill", "james"]
   return (
     <div>
-      <BillSplitter/>
+      <BillSplitter parties={parties}/>
     </div>
   );
 }
