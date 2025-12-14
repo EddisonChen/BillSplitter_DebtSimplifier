@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Alert from "../../MiniComponents/MuiAlert/MuiAlert";
 import { v4 as uuidv4 } from 'uuid';
 
-const AddItem = ({editItemMode,parties, setShowModal, showModal, items, setItems}) => {
+const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItems, itemId}) => {
 
     const [involvedParties, setInvolvedParties] = useState([]);
     const [itemCost, setItemCost] = useState();
@@ -15,6 +15,22 @@ const AddItem = ({editItemMode,parties, setShowModal, showModal, items, setItems
     const [taxExempt, setTaxExempt] = useState(false);
     const [alertStatus, setAlertStatus] = useState();
     const [quantity, setQuantity] = useState(1);
+
+    useEffect(() => {
+        if (editItemMode) {
+            for (let i=0; i<items.length; i++) {
+                if (items[i].itemId = itemId) {
+                    setInvolvedParties(items[i].involvedParties);
+                    setItemCost(items[i].itemCost);
+                    setItemName(items[i].itemName);
+                    setTaxExempt(items[i].taxExempt);
+                    setQuantity(items[i].quantity);
+                }
+            }
+            
+        }
+        
+    }, [])
 
     const handleModalClose = () => {
         setShowModal(false);
@@ -73,39 +89,42 @@ const AddItem = ({editItemMode,parties, setShowModal, showModal, items, setItems
     const handleSubmit = () => {
 
         // Creates item object
-        const itemObject = {
-            itemId: uuidv4(),
-            itemName: itemName,
-            itemCost: itemCost*quantity,
-            involvedParties: involvedParties,
-            taxAmount: 0,
-            tipAmount: 0,
-            totalCost: 0,
-            taxExempt: taxExempt,
-            quantity: quantity,
-            singleItemValues: {
-                itemCost: itemCost,
+        if (!editItemMode) {
+            const itemObject = {
+                itemId: uuidv4(),
+                itemName: itemName,
+                itemCost: itemCost*quantity,
+                involvedParties: involvedParties,
                 taxAmount: 0,
                 tipAmount: 0,
                 totalCost: 0,
+                taxExempt: taxExempt,
+                quantity: quantity,
+                singleItemValues: {
+                    itemCost: itemCost,
+                    taxAmount: 0,
+                    tipAmount: 0,
+                    totalCost: 0,
             }
         };
-
-        // const itemObjects = [];
-
-        // for (let i=0; i<quantity; i++) {
-        //     itemObjects.push({
-        //         itemName: itemName,
-        //         itemCost: itemCost,
-        //         involvedParties: involvedParties,
-        //         taxAmount: 0,
-        //         tipAmount: 0,
-        //         totalCost: 0,
-        //         taxExempt: taxExempt
-        //     })
-        // }
-
-        setItems(items => [...items, itemObject]);
+            setItems(items => [...items, itemObject]);
+        } else {
+            const itemsCopy = structuredClone(items);
+            for (let i=0; i<itemsCopy.length; i++) {
+                if (itemsCopy[i].itemId = itemId) {
+                    itemsCopy[i].itemName = itemName;
+                    itemsCopy[i].itemCost = itemCost*quantity;
+                    itemsCopy[i].involvedParties = involvedParties;
+                    itemsCopy[i].taxAmount = itemsCopy[i].tipAmount = itemsCopy[i].totalCost = 0;
+                    itemsCopy[i].taxExempt = taxExempt;
+                    itemsCopy[i].quantity = quantity;
+                    itemsCopy[i].singleItemValues.itemCost = itemCost;
+                    itemsCopy[i].singleItemValues.taxAmount = itemsCopy[i].singleItemValues.tipAmount = itemsCopy[i].singleItemValues.totalCost = 0;
+                }
+            }
+            setItems(itemsCopy);
+            setShowModal(false);
+        }
 
         // Resets all fields in form to blank --> preps for next item entry
         setItemCost("");
@@ -160,7 +179,7 @@ const AddItem = ({editItemMode,parties, setShowModal, showModal, items, setItems
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Item
+            {editItemMode ? <p>Edit Item</p> : <p>Add Item</p>}
           </Typography>
             <form>
                 <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput} value={itemName}></input>

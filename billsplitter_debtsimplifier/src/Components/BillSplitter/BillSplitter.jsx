@@ -70,8 +70,6 @@ const BillSplitter = ({parties}) => {
         setShowModal(!showModal);
     };
 
-    console.log(showModal)
-
     const toggleEditMode = () => {
         setEditItemMode(!editItemMode);
     }
@@ -88,6 +86,7 @@ const BillSplitter = ({parties}) => {
                 showModal={editItemMode}
                 items={items}
                 setItems={setItems}
+                itemId={item.itemId}
                 />
                 }
         </tr>
@@ -106,7 +105,7 @@ const BillSplitter = ({parties}) => {
         const calculateTax = () => {
             let singleItemTaxAmount;
             let totalTaxAmount;
-            const tempItems = [...items];
+            const tempItems = structuredClone(items);
             if (taxInputType === "percentage") {
                 for (let i=0; i<tempItems.length; i++) {
                     if (tempItems[i].taxExempt == false) {
@@ -135,33 +134,35 @@ const BillSplitter = ({parties}) => {
             return tempItems;
         }
 
-    const calculateTip = (tempItems) => {
-        for (let i=0; i<tempItems.length; i++) {
-            if (tipAfterTax) {
-                const singleItemCostPlusTax = tempItems[i].singleItemValues.itemCost + tempItems[i].singleItemValues.taxAmount;
-                const costPlusTax = tempItems[i].itemCost + tempItems[i].taxAmount;
-                tempItems[i].singleItemValues.tipAmount = tipInput*singleItemCostPlusTax;
-                tempItems[i].tipAmount = tipInput*costPlusTax;
-            } else {
-                tempItems[i].singleItemValues.tipAmount = tipInput*tempItems[i].singleItemValues.itemCost;
-                tempItems[i].tipAmount = tipInput*tempItems[i].itemCost;
+        const calculateTip = (tempItems) => {
+            for (let i=0; i<tempItems.length; i++) {
+                if (tipAfterTax) {
+                    const singleItemCostPlusTax = tempItems[i].singleItemValues.itemCost + tempItems[i].singleItemValues.taxAmount;
+                    const costPlusTax = tempItems[i].itemCost + tempItems[i].taxAmount;
+                    tempItems[i].singleItemValues.tipAmount = tipInput*singleItemCostPlusTax;
+                    tempItems[i].tipAmount = tipInput*costPlusTax;
+                } else {
+                    tempItems[i].singleItemValues.tipAmount = tipInput*tempItems[i].singleItemValues.itemCost;
+                    tempItems[i].tipAmount = tipInput*tempItems[i].itemCost;
+                }
             }
+            return tempItems;
         }
-        return tempItems;
-    }
 
-    const calculateFinalItemCost = () => {
-        const itemsv1 = calculateTax();
-        const itemsv2 = calculateTip(itemsv1);
+        const calculateFinalItemCost = () => {
+            const itemsv1 = calculateTax();
+            const itemsv2 = calculateTip(itemsv1);
 
-        for (let i=0; i<itemsv2.length; i++) {
-            itemsv2[i].totalCost = itemsv2[i].itemCost + itemsv2[i].taxAmount + itemsv2[i].tipAmount;
-            itemsv2[i].singleItemValues.totalCost = itemsv2[i].singleItemValues.itemCost + itemsv2[i].singleItemValues.taxAmount + itemsv2[i].singleItemValues.tipAmount;
+            for (let i=0; i<itemsv2.length; i++) {
+                itemsv2[i].totalCost = itemsv2[i].itemCost + itemsv2[i].taxAmount + itemsv2[i].tipAmount;
+                itemsv2[i].singleItemValues.totalCost = itemsv2[i].singleItemValues.itemCost + itemsv2[i].singleItemValues.taxAmount + itemsv2[i].singleItemValues.tipAmount;
+            }
+            setItemsWithCalculations(itemsv2);
         }
-        setItemsWithCalculations(itemsv2);
-    }
-    calculateFinalItemCost();
-    }, [items.length, taxInput, taxInputType, tipInput, items, tipAfterTax]);
+
+        calculateFinalItemCost();
+        
+    }, [taxInput, taxInputType, tipInput, items, tipAfterTax]);
 
     useEffect(() => {
         const updatePaymentCalculation = () => {
@@ -195,7 +196,7 @@ const BillSplitter = ({parties}) => {
     }, [itemsWithCalculations, payor, tempParties]);
     
 
-    console.log(items)
+    console.log(itemsWithCalculations)
     console.log(partyInformation)
 
     return (
