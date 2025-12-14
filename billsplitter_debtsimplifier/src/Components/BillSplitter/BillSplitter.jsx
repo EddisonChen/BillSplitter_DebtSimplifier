@@ -7,6 +7,7 @@ import MuiAlert from "../../MiniComponents/MuiAlert/MuiAlert";
 // UI - Summary view: Total, tax, tip, amount owed to payor by parties
 // - Person view - List items, costs per party
 // - Item view - List people, costs per item
+// need to be able to edit/delete items
 
 const BillSplitter = ({parties}) => {
 
@@ -86,13 +87,16 @@ const BillSplitter = ({parties}) => {
 
     useEffect(() => {
         const calculateTax = () => {
-            let itemTaxAmount;
+            let singleItemTaxAmount;
+            let totalTaxAmount;
             const tempItems = [...items];
             if (taxInputType === "percentage") {
                 for (let i=0; i<tempItems.length; i++) {
                     if (tempItems[i].taxExempt == false) {
-                        itemTaxAmount = (taxInput/100)*tempItems[i].itemCost;
-                        tempItems[i].taxAmount = itemTaxAmount;
+                        singleItemTaxAmount = (taxInput/100)*tempItems[i].singleItemValues.itemCost;
+                        totalTaxAmount = (taxInput/100)*tempItems[i].itemCost;
+                        tempItems[i].singleItemValues.taxAmount = singleItemTaxAmount;
+                        tempItems[i].taxAmount = totalTaxAmount;
                     }
                 }
             } else if (taxInputType === "amount") {
@@ -105,8 +109,9 @@ const BillSplitter = ({parties}) => {
                 const taxPercentage = taxInput/sumCost;
                 for (let i=0; i<tempItems.length; i++) {
                     if (tempItems[i].taxExempt == false) {
-                        itemTaxAmount = taxPercentage*tempItems[i].itemCost;
-                        tempItems[i].taxAmount = itemTaxAmount;
+                        singleItemTaxAmount = taxPercentage*tempItems[i].singleItemValues.itemCost;
+                        totalTaxAmount = taxPercentage*tempItems[i].itemCost;
+                        tempItems[i].taxAmount = totalTaxAmount;
                     }
                 }
             }
@@ -116,9 +121,12 @@ const BillSplitter = ({parties}) => {
     const calculateTip = (tempItems) => {
         for (let i=0; i<tempItems.length; i++) {
             if (tipAfterTax) {
-                const costPlusTip = tempItems[i].itemCost + tempItems[i].taxAmount;
-                tempItems[i].tipAmount = tipInput*costPlusTip;
+                const singleItemCostPlusTax = tempItems[i].singleItemValues.itemCost + tempItems[i].singleItemValues.taxAmount;
+                const costPlusTax = tempItems[i].itemCost + tempItems[i].taxAmount;
+                tempItems[i].singleItemValues.tipAmount = tipInput*singleItemCostPlusTax;
+                tempItems[i].tipAmount = tipInput*costPlusTax;
             } else {
+                tempItems[i].singleItemValues.tipAmount = tipInput*tempItems[i].singleItemValues.itemCost;
                 tempItems[i].tipAmount = tipInput*tempItems[i].itemCost;
             }
         }
@@ -131,6 +139,7 @@ const BillSplitter = ({parties}) => {
 
         for (let i=0; i<itemsv2.length; i++) {
             itemsv2[i].totalCost = itemsv2[i].itemCost + itemsv2[i].taxAmount + itemsv2[i].tipAmount;
+            itemsv2[i].singleItemValues.totalCost = itemsv2[i].singleItemValues.itemCost + itemsv2[i].singleItemValues.taxAmount + itemsv2[i].singleItemValues.tipAmount;
         }
         setItemsWithCalculations(itemsv2);
     }
@@ -157,6 +166,7 @@ const BillSplitter = ({parties}) => {
                             itemName: itemsWithCalculations[j].itemName,
                             amountOwedOnItem: splitItemCost,
                             splitWith: itemsWithCalculations[j].involvedParties.filter((party)=> (party !== partyCentric[i].debtor)),
+                            quantity: itemsWithCalculations[j].quantity,
                         });
                     }
                 }

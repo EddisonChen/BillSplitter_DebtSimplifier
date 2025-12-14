@@ -5,18 +5,36 @@ import Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button";
 import Alert from "../../MiniComponents/MuiAlert/MuiAlert";
 
-// add tax exempt checkbox
-// clear all fields upon submit
-// change quantity of items?
-
 const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
 
     const [involvedParties, setInvolvedParties] = useState([]);
     const [itemCost, setItemCost] = useState();
     const [itemName, setItemName] = useState();
-    const [warning, setWarning] = useState();
+    const [alertMsg, setAlertMsg] = useState();
     const [taxExempt, setTaxExempt] = useState(false);
+    const [alertStatus, setAlertStatus] = useState();
+    const [quantity, setQuantity] = useState(1);
+
+    const handleModalClose = () => {
+        setShowModal(false);
+    }
+
+    const handleQuantityOnChange = (event) => {
+        setQuantity(Number(event.target.value));
+    }
+
+    const handleQuantityOnBlur = (event) => {
+        const input = Number(event.target.value);
+        if (input < 1 || input === "") {
+            setQuantity(1);
+        } else if (input > 100) {
+            setQuantity(100);
+        }
+    }
+
+    console.log(quantity)
     
+    // Updates item name/cost according on input
     const handleItemInput = (event) => {
         if (event.target.name === "itemName") {
             setItemName(event.target.value);
@@ -25,6 +43,7 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
         }
     }
 
+    // Allows users to mark items as tax exempt
     const handleTaxExempt = (event) => {
         if (event.target.checked) {
             setTaxExempt(true);
@@ -33,6 +52,7 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
         }
     }
 
+    // Checked parties will be included in the split for the item
     const addPartyToItem = (event) => {
         if (event.target.checked) {
             setInvolvedParties(involvedParties => [...involvedParties, event.target.value]);
@@ -41,41 +61,79 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
         }
     }
 
+    // Generates checkboxes for the parties available
     const involvedPartiesCheckboxes = parties.map((party) => (
         <div key={party}>
-            <input type="checkbox" value={party} onChange={addPartyToItem}/><label>{party}</label>
+            <input type="checkbox" value={party} onChange={addPartyToItem} checked={involvedParties.includes(party) ? true : false}/><label>{party}</label>
         </div>
     ));
 
-    const handleModalClose = () => {
-        setShowModal(false);
-    }
 
     const handleSubmit = () => {
 
+        // Creates item object
         const itemObject = {
             itemName: itemName,
-            itemCost: itemCost,
+            itemCost: itemCost*quantity,
             involvedParties: involvedParties,
             taxAmount: 0,
             tipAmount: 0,
             totalCost: 0,
-            taxExempt: taxExempt
+            taxExempt: taxExempt,
+            quantity: quantity,
+            singleItemValues: {
+                itemCost: itemCost,
+                taxAmount: 0,
+                tipAmount: 0,
+                totalCost: 0,
+            }
         };
 
+        // const itemObjects = [];
+
+        // for (let i=0; i<quantity; i++) {
+        //     itemObjects.push({
+        //         itemName: itemName,
+        //         itemCost: itemCost,
+        //         involvedParties: involvedParties,
+        //         taxAmount: 0,
+        //         tipAmount: 0,
+        //         totalCost: 0,
+        //         taxExempt: taxExempt
+        //     })
+        // }
+
         setItems(items => [...items, itemObject]);
+
+        // Resets all fields in form to blank --> preps for next item entry
+        setItemCost("");
+        setItemName("");
+        setInvolvedParties([]);
+        setTaxExempt(false);
+        setQuantity(1);
     }
 
     console.log(items)
 
+    // Ensures that all fields are populated and valid, sets alert message and status
     const validateInputs = (event) => {
         event.preventDefault();
-        if (itemCost === undefined || itemCost === "" || itemName === undefined || itemName === "") {
-            setWarning("One or more fields empty!");
+        if (itemCost === undefined || itemCost === "" || itemCost === 0) {
+            setAlertMsg("Please enter item cost!");
+            setAlertStatus("warning")
+        } else if (itemName === undefined || itemName === "") {
+            setAlertMsg("Please enter item name!");
+            setAlertStatus("warning")
         } else if (involvedParties.length < 1) {
-            setWarning("Please select at least one party");
+            setAlertMsg("Please select at least one party");
+            setAlertStatus("warning")
+        } else if (quantity === "" || quantity === undefined || quantity === 0) {
+            setAlertMsg("Please enter item quantity of at least 1");
+            setAlertStatus("warning")
         } else {
             handleSubmit();
+            setAlertMsg("Item submitted successfully!")
+            setAlertStatus("success")
         }
     }
 
@@ -103,17 +161,18 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
             Add Item
           </Typography>
             <form>
-                <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput}></input>
-                <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput}></input>
-                <input type="checkbox" onChange={handleTaxExempt}></input><label>Tax Exempt?</label>
+                <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput} value={itemName}></input>
+                <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput} value={itemCost}></input>
+                <input type="checkbox" name="taxExemptCheckbox" onChange={handleTaxExempt} checked={taxExempt}></input><label>Tax Exempt?</label>
+                <input type="number" onChange={handleQuantityOnChange} onBlur={handleQuantityOnBlur} name="quantity" value={quantity}></input><label>Item Quantity</label>
                 <p>Who was included in this item?</p>
                 {involvedPartiesCheckboxes}
                 <Button type="submit" onClick={validateInputs} variant="outlined">Submit Item</Button>
             </form>
-            {warning && <Alert
-            severity={"warning"}
-            title={"Warning"}
-            message={warning}></Alert>}
+            {alertMsg && <Alert
+            severity={alertStatus}
+            // title={alertStatus}
+            message={alertMsg}></Alert>}
         </Box>
       </Modal>
     )
