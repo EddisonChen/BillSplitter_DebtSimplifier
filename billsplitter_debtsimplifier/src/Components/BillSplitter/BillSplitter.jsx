@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 // UI - Summary view: Total, tax, tip, amount owed to payor by parties
 // - Person view - List items, costs per party
 // - Item view - List people, costs per item
-// need to be able to edit/delete items
 
 const BillSplitter = ({parties}) => {
 
@@ -32,6 +31,20 @@ const BillSplitter = ({parties}) => {
         }
     }, [parties]);
 
+    const addTempParty = (event) => {
+        event.preventDefault();
+        if (partyInput.length > 0) {
+            if (!tempParties.includes(partyInput)) {
+                setTempParties(tempParties => [...tempParties, partyInput]);
+                setWarning();
+            } else {
+                setWarning("Party cannot have the same name as an existing party");
+            }
+            
+        }
+        setPartyInput("");
+    };
+
     const handleTipAfterTax = () => {
         setTipAfterTax(!tipAfterTax);
     }
@@ -48,22 +61,12 @@ const BillSplitter = ({parties}) => {
         setTipInput(Number(event.target.value)/100);
     }
 
-    const onPartyInputChange = (event) => {
+    const handlePartyInputChange = (event) => {
         setPartyInput(event.target.value);
     };
 
-    const addTempParty = (event) => {
-        event.preventDefault();
-        if (partyInput.length > 0) {
-            if (!tempParties.includes(partyInput)) {
-                setTempParties(tempParties => [...tempParties, partyInput]);
-                setWarning();
-            } else {
-                setWarning("Party cannot have the same name as an existing party");
-            }
-            
-        }
-        setPartyInput("");
+    const handlePayor = (event) => {
+        setPayor(event.target.value);
     };
 
     const toggleModal = () => {
@@ -79,8 +82,8 @@ const BillSplitter = ({parties}) => {
         const updatedItems = items.filter(item => item.itemId !== id);
         setItems(updatedItems);
     }
-    
 
+    // Displays items on page with options to edit or remove
     const showItems = itemsWithCalculations.map((item) => (
         <tr key={item.itemId}>
             <td onClick={toggleEditMode}>{item.itemName}</td>
@@ -98,18 +101,13 @@ const BillSplitter = ({parties}) => {
                 }
             <button onClick={handleRemoveItem} value={item.itemId}>Remove Item</button>
         </tr>
-
     ));
 
-    const handlePayor = (event) => {
-        setPayor(event.target.value);
-    };
-
-    //add up total cost of non-tax exempt items
-    // if percentage - calculate tax only on non-exempt items
-    // if amount - calculate tax percentage via tax amount/total cost of non-exempt items
-
+    
     useEffect(() => {
+        //add up total cost of non-tax exempt items
+        // if percentage - calculate tax only on non-exempt items
+        // if amount - calculate tax percentage via tax amount/total cost of non-exempt items
         const calculateTax = () => {
             let singleItemTaxAmount;
             let totalTaxAmount;
@@ -142,6 +140,7 @@ const BillSplitter = ({parties}) => {
             return tempItems;
         }
 
+        // Calculates tip based on if applied before/after tax
         const calculateTip = (tempItems) => {
             for (let i=0; i<tempItems.length; i++) {
                 if (tipAfterTax) {
@@ -156,7 +155,8 @@ const BillSplitter = ({parties}) => {
             }
             return tempItems;
         }
-
+        
+        // Updates itemsWithCalculations Object
         const calculateFinalItemCost = () => {
             const itemsv1 = calculateTax();
             const itemsv2 = calculateTip(itemsv1);
@@ -173,6 +173,7 @@ const BillSplitter = ({parties}) => {
     }, [taxInput, taxInputType, tipInput, items, tipAfterTax]);
 
     useEffect(() => {
+        // Creates party-centered object
         const updatePaymentCalculation = () => {
             const partyCentric = [];
             for (let i=0; i<tempParties.length; i++) {
@@ -215,7 +216,7 @@ const BillSplitter = ({parties}) => {
             </div>
             {parties === undefined ? <div>
                 <form>
-                    <input type="text" placeholder="Party Name" value={partyInput} onChange={onPartyInputChange}></input>
+                    <input type="text" placeholder="Party Name" value={partyInput} onChange={handlePartyInputChange}></input>
                     <button type="submit" onClick={addTempParty}>Add Party</button>
                 </form>
                 {warning && <MuiAlert
