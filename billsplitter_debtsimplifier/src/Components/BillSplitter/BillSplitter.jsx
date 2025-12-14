@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 import AddItem from "../AddItem/AddItem";
 import MuiAlert from "../../MiniComponents/MuiAlert/MuiAlert";
 
+//Mui Tabs, Mui Speed Dial
+// receipt scanner
+// UI - Summary view: Total, tax, tip, amount owed to payor by parties
+// - Person view - List items, costs per party
+// - Item view - List people, costs per item
+
 const BillSplitter = ({parties}) => {
 
     const [tempParties, setTempParties] = useState([]);
@@ -74,24 +80,34 @@ const BillSplitter = ({parties}) => {
         setPayor(event.target.value);
     };
 
+    //add up total cost of non-tax exempt items
+    // if percentage - calculate tax only on non-exempt items
+    // if amount - calculate tax percentage via tax amount/total cost of non-exempt items
+
     useEffect(() => {
         const calculateTax = () => {
-            let taxAmountperItem;
+            let itemTaxAmount;
             const tempItems = [...items];
             if (taxInputType === "percentage") {
                 for (let i=0; i<tempItems.length; i++) {
-                    taxAmountperItem = (taxInput/100)*tempItems[i].itemCost;
-                    tempItems[i].taxAmount = taxAmountperItem;
+                    if (tempItems[i].taxExempt == false) {
+                        itemTaxAmount = (taxInput/100)*tempItems[i].itemCost;
+                        tempItems[i].taxAmount = itemTaxAmount;
+                    }
                 }
             } else if (taxInputType === "amount") {
                 let sumCost = 0;
                 for (let i=0; i<tempItems.length; i++) {
-                    sumCost += tempItems[i].itemCost;
+                    if (tempItems[i].taxExempt == false) {
+                        sumCost += tempItems[i].itemCost;
+                    }
                 }
-                const tipPercentage = taxInput/sumCost;
+                const taxPercentage = taxInput/sumCost;
                 for (let i=0; i<tempItems.length; i++) {
-                    taxAmountperItem = tipPercentage*tempItems[i].itemCost;
-                    tempItems[i].taxAmount = taxAmountperItem
+                    if (tempItems[i].taxExempt == false) {
+                        itemTaxAmount = taxPercentage*tempItems[i].itemCost;
+                        tempItems[i].taxAmount = itemTaxAmount;
+                    }
                 }
             }
             return tempItems;

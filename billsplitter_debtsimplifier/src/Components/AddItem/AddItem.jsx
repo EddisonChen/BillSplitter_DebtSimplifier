@@ -5,18 +5,31 @@ import Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button";
 import Alert from "../../MiniComponents/MuiAlert/MuiAlert";
 
+// add tax exempt checkbox
+// clear all fields upon submit
+// change quantity of items?
+
 const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
 
     const [involvedParties, setInvolvedParties] = useState([]);
     const [itemCost, setItemCost] = useState();
     const [itemName, setItemName] = useState();
     const [warning, setWarning] = useState();
+    const [taxExempt, setTaxExempt] = useState(false);
     
     const handleItemInput = (event) => {
         if (event.target.name === "itemName") {
             setItemName(event.target.value);
         } else if (event.target.name === "itemCost") {
             setItemCost(Number(event.target.value));
+        }
+    }
+
+    const handleTaxExempt = (event) => {
+        if (event.target.checked) {
+            setTaxExempt(true);
+        } else {
+            setTaxExempt(false);
         }
     }
 
@@ -47,12 +60,13 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
             taxAmount: 0,
             tipAmount: 0,
             totalCost: 0,
+            taxExempt: taxExempt
         };
 
         setItems(items => [...items, itemObject]);
-
-        handleModalClose();
     }
+
+    console.log(items)
 
     const validateInputs = (event) => {
         event.preventDefault();
@@ -63,7 +77,6 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
         } else {
             handleSubmit();
         }
-        
     }
 
     const style = {
@@ -92,6 +105,7 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
             <form>
                 <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput}></input>
                 <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput}></input>
+                <input type="checkbox" onChange={handleTaxExempt}></input><label>Tax Exempt?</label>
                 <p>Who was included in this item?</p>
                 {involvedPartiesCheckboxes}
                 <Button type="submit" onClick={validateInputs} variant="outlined">Submit Item</Button>
