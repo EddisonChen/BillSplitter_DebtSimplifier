@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AddItem from "../AddItem/AddItem";
 import MuiAlert from "../../MiniComponents/MuiAlert/MuiAlert";
+import { v4 as uuidv4 } from 'uuid';
 
 //Mui Tabs, Mui Speed Dial
 // receipt scanner
@@ -151,6 +152,7 @@ const BillSplitter = ({parties}) => {
             const partyCentric = [];
             for (let i=0; i<tempParties.length; i++) {
                 partyCentric.push({
+                    trxId: uuidv4(),
                     debtor: tempParties[i],
                     amountOwed: 0,
                     payor: payor || "Payor",

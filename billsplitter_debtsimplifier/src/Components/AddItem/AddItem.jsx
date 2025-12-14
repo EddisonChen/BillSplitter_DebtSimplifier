@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button";
 import Alert from "../../MiniComponents/MuiAlert/MuiAlert";
+import { v4 as uuidv4 } from 'uuid';
 
 const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
 
@@ -73,6 +74,7 @@ const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
 
         // Creates item object
         const itemObject = {
+            itemId: uuidv4(),
             itemName: itemName,
             itemCost: itemCost*quantity,
             involvedParties: involvedParties,
