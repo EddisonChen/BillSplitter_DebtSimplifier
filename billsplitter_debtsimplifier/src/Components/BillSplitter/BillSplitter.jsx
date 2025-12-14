@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import AddItem from "../AddItem/AddItem";
+import MuiAlert from "../../MiniComponents/MuiAlert/MuiAlert";
 
 const BillSplitter = ({parties}) => {
 
     const [tempParties, setTempParties] = useState([]);
     const [partyInput, setPartyInput] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [items, setItems] = useState([]);
     const [itemsWithCalculations, setItemsWithCalculations] = useState();
     const [payor, setPayor] = useState();
@@ -13,7 +14,14 @@ const BillSplitter = ({parties}) => {
     const [taxInput, setTaxInput] = useState(0);
     const [tipInput, setTipInput] = useState(0);
     const [tipAfterTax, setTipAfterTax] = useState(false);
-    const [partyInformation, setPartyInformation] = useState([])
+    const [partyInformation, setPartyInformation] = useState([]);
+    const [warning, setWarning] = useState();
+
+    useEffect(() => {
+        if (parties !== undefined) {
+            setTempParties(parties);
+        }
+    }, [parties]);
 
     const handleTipAfterTax = () => {
         setTipAfterTax(!tipAfterTax);
@@ -31,12 +39,6 @@ const BillSplitter = ({parties}) => {
         setTipInput(Number(event.target.value)/100);
     }
 
-    useEffect(() => {
-        if (parties !== undefined) {
-            setTempParties(parties);
-        }
-    }, [parties]);
-    
     const onPartyInputChange = (event) => {
         setPartyInput(event.target.value);
     };
@@ -44,13 +46,19 @@ const BillSplitter = ({parties}) => {
     const addTempParty = (event) => {
         event.preventDefault();
         if (partyInput.length > 0) {
-            setTempParties(tempParties => [...tempParties, partyInput]);
+            if (!tempParties.includes(partyInput)) {
+                setTempParties(tempParties => [...tempParties, partyInput]);
+                setWarning();
+            } else {
+                setWarning("Party cannot have the same name as an existing party");
+            }
+            
         }
         setPartyInput("");
     };
 
     const togglePopup = () => {
-        setShowPopup(!showPopup)
+        setShowModal(!showModal);
     };
 
     const showItems = items.map((item) => (
@@ -73,12 +81,12 @@ const BillSplitter = ({parties}) => {
             if (taxInputType === "percentage") {
                 for (let i=0; i<tempItems.length; i++) {
                     taxAmountperItem = (taxInput/100)*tempItems[i].itemCost;
-                    tempItems[i].taxAmount = taxAmountperItem
+                    tempItems[i].taxAmount = taxAmountperItem;
                 }
             } else if (taxInputType === "amount") {
                 let sumCost = 0;
                 for (let i=0; i<tempItems.length; i++) {
-                    sumCost += tempItems[i].itemCost
+                    sumCost += tempItems[i].itemCost;
                 }
                 const tipPercentage = taxInput/sumCost;
                 for (let i=0; i<tempItems.length; i++) {
@@ -103,7 +111,7 @@ const BillSplitter = ({parties}) => {
 
     const calculateFinalItemCost = () => {
         const itemsv1 = calculateTax();
-        const itemsv2 = calculateTip(itemsv1)
+        const itemsv2 = calculateTip(itemsv1);
 
         for (let i=0; i<itemsv2.length; i++) {
             itemsv2[i].totalCost = itemsv2[i].itemCost + itemsv2[i].taxAmount + itemsv2[i].tipAmount;
@@ -128,12 +136,12 @@ const BillSplitter = ({parties}) => {
                 for (let j=0; j<itemsWithCalculations.length; j++) {
                     if (itemsWithCalculations[j].involvedParties.includes(partyCentric[i].debtor)) {
                         const splitItemCost = itemsWithCalculations[j].totalCost/itemsWithCalculations[j].involvedParties.length;
-                        partyCentric[i].amountOwed += splitItemCost
+                        partyCentric[i].amountOwed += splitItemCost;
                         partyCentric[i].items.push({
                             itemName: itemsWithCalculations[j].itemName,
                             amountOwedOnItem: splitItemCost,
                             splitWith: itemsWithCalculations[j].involvedParties.filter((party)=> (party !== partyCentric[i].debtor)),
-                        })
+                        });
                     }
                 }
             }
@@ -154,8 +162,11 @@ const BillSplitter = ({parties}) => {
             {parties === undefined ? <div>
                 <form>
                     <input type="text" placeholder="Party Name" value={partyInput} onChange={onPartyInputChange}></input>
-                    <button type="submit" onClick={addTempParty}>Submit</button>
+                    <button type="submit" onClick={addTempParty}>Add Party</button>
                 </form>
+                {warning && <MuiAlert
+                    severity={"warning"}
+                    message={warning}></MuiAlert>}
             </div> : null}
             <select onChange={handlePayor} defaultValue="">
                 <option disabled="disabled" value="">--Select Payor--</option>
@@ -165,10 +176,10 @@ const BillSplitter = ({parties}) => {
             </select>
             <div>
                 <button onClick={togglePopup}>Add Item</button>
-                {showPopup && tempParties.length>0 ? <AddItem 
+                {showModal && tempParties.length>0 ? <AddItem 
                     parties={tempParties} 
-                    showPopup={showPopup} 
-                    setShowPopup={setShowPopup}
+                    showModal={showModal} 
+                    setShowModal={setShowModal}
                     items={items}
                     setItems={setItems}
                     />: null}
