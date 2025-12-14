@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import AddItem from "../AddItem/AddItem";
 import MuiAlert from "../../MiniComponents/MuiAlert/MuiAlert";
 import { v4 as uuidv4 } from 'uuid';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 
 //Mui Tabs, Mui Speed Dial
 // receipt scanner
@@ -278,6 +281,20 @@ const BillSplitter = ({parties}) => {
 
                 
             )}
+            <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
+                <Tabs
+                    value={2} // indicates which tab is selected
+                    variant="fullWidth"
+                    scrollButtons="auto"
+                    aria-label="scrollable auto tabs example"
+                    textColor="secondary"
+                    indicatorColor="secondary"
+                    centered>
+                    <Tab label="Summary"/>
+                    <Tab label="Parties"/>
+                    <Tab label="Items"/>
+                </Tabs>
+            </Box>
             
         </div>
     )
