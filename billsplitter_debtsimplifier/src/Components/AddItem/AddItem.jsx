@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Alert from "../../MiniComponents/MuiAlert/MuiAlert";
 import { v4 as uuidv4 } from 'uuid';
 
-const AddItem = ({parties, setShowModal, showModal, items, setItems}) => {
+const AddItem = ({editItemMode,parties, setShowModal, showModal, items, setItems}) => {
 
     const [involvedParties, setInvolvedParties] = useState([]);
     const [itemCost, setItemCost] = useState();

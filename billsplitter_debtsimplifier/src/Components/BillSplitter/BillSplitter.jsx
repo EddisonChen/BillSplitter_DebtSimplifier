@@ -16,7 +16,7 @@ const BillSplitter = ({parties}) => {
     const [partyInput, setPartyInput] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [items, setItems] = useState([]);
-    const [itemsWithCalculations, setItemsWithCalculations] = useState();
+    const [itemsWithCalculations, setItemsWithCalculations] = useState([]);
     const [payor, setPayor] = useState();
     const [taxInputType, setTaxInputType] = useState("percentage");
     const [taxInput, setTaxInput] = useState(0);
@@ -24,6 +24,7 @@ const BillSplitter = ({parties}) => {
     const [tipAfterTax, setTipAfterTax] = useState(false);
     const [partyInformation, setPartyInformation] = useState([]);
     const [warning, setWarning] = useState();
+    const [editItemMode, setEditItemMode] = useState(false);
 
     useEffect(() => {
         if (parties !== undefined) {
@@ -65,15 +66,30 @@ const BillSplitter = ({parties}) => {
         setPartyInput("");
     };
 
-    const togglePopup = () => {
+    const toggleModal = () => {
         setShowModal(!showModal);
     };
 
-    const showItems = items.map((item) => (
-        <tr key={item.itemName}>
-            <td>{item.itemName}</td>
+    console.log(showModal)
+
+    const toggleEditMode = () => {
+        setEditItemMode(!editItemMode);
+    }
+
+    const showItems = itemsWithCalculations.map((item) => (
+        <tr key={item.itemId}>
+            <td onClick={toggleEditMode}>{item.itemName}</td>
             <td>{item.itemCost}</td>
             <td>{item.involvedParties}</td>
+            {editItemMode && <AddItem
+                editItemMode={editItemMode}
+                parties={tempParties}
+                setShowModal={setEditItemMode}
+                showModal={editItemMode}
+                items={items}
+                setItems={setItems}
+                />
+                }
         </tr>
 
     ));
@@ -203,14 +219,14 @@ const BillSplitter = ({parties}) => {
                 ))}
             </select>
             <div>
-                <button onClick={togglePopup}>Add Item</button>
-                {showModal && tempParties.length>0 ? <AddItem 
+                {tempParties.length > 0 && <button onClick={toggleModal}>Add Item</button>}
+                {showModal && <AddItem 
                     parties={tempParties} 
                     showModal={showModal} 
                     setShowModal={setShowModal}
                     items={items}
                     setItems={setItems}
-                    />: null}
+                    />}
             </div>
             <div>
                 <input type="number" placeholder="Tip %" onChange={handleTipInput}></input>
