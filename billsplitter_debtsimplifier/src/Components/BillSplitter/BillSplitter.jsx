@@ -1,10 +1,22 @@
 import { useState, useEffect } from "react";
-import AddItem from "../AddItem/AddItem";
-import MuiAlert from "../../MiniComponents/MuiAlert/MuiAlert";
+import AddItem from "./SpeedDialActions/AddItem";
+import SetPayor from "./SpeedDialActions/SetPayor";
+import SetTax from "./SpeedDialActions/SetTax";
+import SetTip from "./SpeedDialActions/SetTip";
+import AddTempParty from "./SpeedDialActions/AddTempParty";
 import { v4 as uuidv4 } from 'uuid';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import PersonIcon from '@mui/icons-material/Person';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import TollIcon from '@mui/icons-material/Toll';
+import PercentIcon from '@mui/icons-material/Percent';
+import './BillSplitter.css';
+import Button from "@mui/material/Button";
 
 //Mui Tabs, Mui Speed Dial
 // receipt scanner
@@ -25,52 +37,35 @@ const BillSplitter = ({parties}) => {
     const [tipInput, setTipInput] = useState(0);
     const [tipAfterTax, setTipAfterTax] = useState(false);
     const [partyInformation, setPartyInformation] = useState([]);
-    const [warning, setWarning] = useState();
+    
     const [editItemMode, setEditItemMode] = useState(false);
+    const [tabView, setTabView] = useState(0);
+    const [speedDialModal, setSpeedDialModal] = useState();
+
+    const speedDialActions = [
+        {icon: <AddBoxIcon/>, name: "Add Item", operation: "addItem"},
+        {icon: <PersonIcon/>, name: "Set Payor", operation: "setPayor"},
+        {icon: <TollIcon/>, name: "Tax", operation: "setTax"},
+        {icon: <PercentIcon/>, name: "Tip", operation: "setTip"}
+    ];
+
+    const handleShowAddPartyModal = (event) => {
+        event.preventDefault();
+        setSpeedDialModal("addTempParty");
+        toggleModal();
+    }
+
+    const handleSpeedDialClick = (event, operationType) => {
+        event.preventDefault();
+        setSpeedDialModal(operationType);
+        toggleModal();
+    };
 
     useEffect(() => {
         if (parties !== undefined) {
             setTempParties(parties);
         }
     }, [parties]);
-
-    const addTempParty = (event) => {
-        event.preventDefault();
-        if (partyInput.length > 0) {
-            if (!tempParties.includes(partyInput)) {
-                setTempParties(tempParties => [...tempParties, partyInput]);
-                setWarning();
-            } else {
-                setWarning("Party cannot have the same name as an existing party");
-            }
-            
-        }
-        setPartyInput("");
-    };
-
-    const handleTipAfterTax = () => {
-        setTipAfterTax(!tipAfterTax);
-    }
-
-    const handleTaxInputTypeSwitch = (event) => {
-        setTaxInputType(event.target.value);
-    }
-
-    const handleTaxInput = (event) => {
-        setTaxInput(Number(event.target.value));
-    }
-
-    const handleTipInput = (event) => {
-        setTipInput(Number(event.target.value)/100);
-    }
-
-    const handlePartyInputChange = (event) => {
-        setPartyInput(event.target.value);
-    };
-
-    const handlePayor = (event) => {
-        setPayor(event.target.value);
-    };
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -86,6 +81,10 @@ const BillSplitter = ({parties}) => {
         setItems(updatedItems);
     }
 
+    const handleTabView = (event, newValue) => {
+        setTabView(newValue);
+    }
+
     // Displays items on page with options to edit or remove
     const showItems = itemsWithCalculations.map((item) => (
         <tr key={item.itemId}>
@@ -95,7 +94,7 @@ const BillSplitter = ({parties}) => {
             {editItemMode && <AddItem
                 editItemMode={editItemMode}
                 parties={tempParties}
-                setShowModal={setEditItemMode}
+                toggleModal={toggleEditMode}
                 showModal={editItemMode}
                 items={items}
                 setItems={setItems}
@@ -117,7 +116,7 @@ const BillSplitter = ({parties}) => {
             const tempItems = structuredClone(items);
             if (taxInputType === "percentage") {
                 for (let i=0; i<tempItems.length; i++) {
-                    if (tempItems[i].taxExempt == false) {
+                    if (tempItems[i].taxExempt === false) {
                         singleItemTaxAmount = (taxInput/100)*tempItems[i].singleItemValues.itemCost;
                         totalTaxAmount = (taxInput/100)*tempItems[i].itemCost;
                         tempItems[i].singleItemValues.taxAmount = singleItemTaxAmount;
@@ -127,13 +126,13 @@ const BillSplitter = ({parties}) => {
             } else if (taxInputType === "amount") {
                 let sumCost = 0;
                 for (let i=0; i<tempItems.length; i++) {
-                    if (tempItems[i].taxExempt == false) {
+                    if (tempItems[i].taxExempt === false) {
                         sumCost += tempItems[i].itemCost;
                     }
                 }
                 const taxPercentage = taxInput/sumCost;
                 for (let i=0; i<tempItems.length; i++) {
-                    if (tempItems[i].taxExempt == false) {
+                    if (tempItems[i].taxExempt === false) {
                         singleItemTaxAmount = taxPercentage*tempItems[i].singleItemValues.itemCost;
                         totalTaxAmount = taxPercentage*tempItems[i].itemCost;
                         tempItems[i].taxAmount = totalTaxAmount;
@@ -212,45 +211,12 @@ const BillSplitter = ({parties}) => {
     console.log(itemsWithCalculations)
     console.log(partyInformation)
 
+    console.log(speedDialModal)
+
     return (
         <div>
             <div>
                 {tempParties}
-            </div>
-            {parties === undefined ? <div>
-                <form>
-                    <input type="text" placeholder="Party Name" value={partyInput} onChange={handlePartyInputChange}></input>
-                    <button type="submit" onClick={addTempParty}>Add Party</button>
-                </form>
-                {warning && <MuiAlert
-                    severity={"warning"}
-                    message={warning}></MuiAlert>}
-            </div> : null}
-            <select onChange={handlePayor} defaultValue="">
-                <option disabled="disabled" value="">--Select Payor--</option>
-                {tempParties.map((party) => (
-                    <option value={party} key={party}>{party}</option>
-                ))}
-            </select>
-            <div>
-                {tempParties.length > 0 && <button onClick={toggleModal}>Add Item</button>}
-                {showModal && <AddItem 
-                    parties={tempParties} 
-                    showModal={showModal} 
-                    setShowModal={setShowModal}
-                    items={items}
-                    setItems={setItems}
-                    />}
-            </div>
-            <div>
-                <input type="number" placeholder="Tip %" onChange={handleTipInput}></input>
-                <input type="number" placeholder="Tax" onChange={handleTaxInput}></input>
-                <input type="checkbox" onChange={handleTipAfterTax}></input><label>Tip After Tax?</label>
-                <div>
-                    <p>Tax Input Type</p>
-                    <input type="radio" name="Tax Input Type" value="percentage" defaultChecked onChange={handleTaxInputTypeSwitch}></input><label>Percentage</label>
-                    <input type="radio" name="Tax Input Type" value="amount" onChange={handleTaxInputTypeSwitch}></input><label>Dollar Amount</label>
-                </div>            
             </div>
             {parties && <button>Add to Debt Simplifier</button>}
             {items.length > 0 && (
@@ -281,18 +247,71 @@ const BillSplitter = ({parties}) => {
 
                 
             )}
-            <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
+            {parties === undefined && 
+                <Button variant="outlined" onClick={handleShowAddPartyModal}>Add Party</Button>}
+            {speedDialModal === "addTempParty" && <AddTempParty
+                showModal={showModal}
+                toggleModal={toggleModal}
+                tempParties={tempParties}
+                partyInput={partyInput}
+                setPartyInput={setPartyInput}
+                setTempParties={setTempParties}/>}
+            {speedDialModal === "setTip" && <SetTip
+                showModal={showModal}
+                toggleModal={toggleModal}
+                setTipInput={setTipInput}
+                tipAfterTax={tipAfterTax}
+                setTipAfterTax={setTipAfterTax}/>}
+            {speedDialModal === "setTax" && <SetTax
+                showModal={showModal}
+                toggleModal={toggleModal}
+                setTaxInput={setTaxInput}
+                setTaxInputType={setTaxInputType}/>}
+            {speedDialModal === "setPayor" && <SetPayor
+                parties={tempParties}
+                showModal={showModal} 
+                toggleModal={toggleModal}
+                setPayor={setPayor} />}
+            {speedDialModal === "addItem" && <AddItem
+                parties={tempParties} 
+                showModal={showModal} 
+                toggleModal={toggleModal}
+                items={items}
+                setItems={setItems}/>}
+            {tempParties.length > 0 && <Box className="box" sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+                <SpeedDial
+                    sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                    className="speed-dial"
+                    ariaLabel="speeddial options"
+                    icon={<SpeedDialIcon/>}>
+                    {speedDialActions.map((action) => (
+                        <SpeedDialAction
+                            className="speed-dial-action"
+                            key={speedDialActions.name}
+                            value={speedDialActions.value}
+                            icon={action.icon}
+                            onClick={(event) => {
+                                handleSpeedDialClick(event, action.operation)}}
+                            slotProps={{
+                                tooltip: {
+                                    open: true,
+                                    title: action.name}}}/>
+                    ))}
+                </SpeedDial>
+            </Box>}
+            <Box className="add-item-tabs">
                 <Tabs
-                    value={2} // indicates which tab is selected
+                    value={tabView} // indicates which tab is selected
                     variant="fullWidth"
                     scrollButtons="auto"
-                    aria-label="scrollable auto tabs example"
+                    aria-label="add items tabs"
                     textColor="secondary"
                     indicatorColor="secondary"
+                    onChange={handleTabView}
                     centered>
-                    <Tab label="Summary"/>
-                    <Tab label="Parties"/>
-                    <Tab label="Items"/>
+                    <Tab label="summary" value={0}/>
+                    <Tab label="parties" value={1}/>
+                    <Tab label="items" value={2}/>
                 </Tabs>
             </Box>
             

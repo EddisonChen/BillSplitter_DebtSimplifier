@@ -3,10 +3,10 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button";
-import Alert from "../../MiniComponents/MuiAlert/MuiAlert";
+import Alert from "../../../MiniComponents/MuiAlert/MuiAlert";
 import { v4 as uuidv4 } from 'uuid';
 
-const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItems, itemId}) => {
+const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems, itemId}) => {
 
     const [involvedParties, setInvolvedParties] = useState([]);
     const [itemCost, setItemCost] = useState();
@@ -19,22 +19,16 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
     useEffect(() => {
         if (editItemMode) {
             for (let i=0; i<items.length; i++) {
-                if (items[i].itemId = itemId) {
+                if (items[i].itemId === itemId) {
                     setInvolvedParties(items[i].involvedParties);
-                    setItemCost(items[i].itemCost);
+                    setItemCost(items[i].singleItemValues.itemCost);
                     setItemName(items[i].itemName);
                     setTaxExempt(items[i].taxExempt);
                     setQuantity(items[i].quantity);
                 }
             }
-            
         }
-        
-    }, [])
-
-    const handleModalClose = () => {
-        setShowModal(false);
-    }
+    }, [editItemMode, itemId, items])
 
     const handleQuantityOnChange = (event) => {
         setQuantity(Number(event.target.value));
@@ -109,7 +103,7 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
         } else {
             const tempItems = structuredClone(items);
             for (let i=0; i<tempItems.length; i++) {
-                if (tempItems[i].itemId = itemId) {
+                if (tempItems[i].itemId === itemId) {
                     tempItems[i].itemName = itemName;
                     tempItems[i].itemCost = itemCost*quantity;
                     tempItems[i].involvedParties = involvedParties;
@@ -121,7 +115,7 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
                 }
             }
             setItems(tempItems);
-            setShowModal(false);
+            toggleModal();
         }
 
         // Resets all fields in form to blank --> preps for next item entry
@@ -155,43 +149,43 @@ const AddItem = ({editItemMode, parties, setShowModal, showModal, items, setItem
     }
 
     const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '80%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80%',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
 
     return(
         <Modal
-        open={showModal}
-        onClose={handleModalClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {editItemMode ? <p>Edit Item</p> : <p>Add Item</p>}
-          </Typography>
-            <form>
-                <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput} value={itemName}></input>
-                <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput} value={itemCost}></input>
-                <input type="checkbox" name="taxExemptCheckbox" onChange={handleTaxExempt} checked={taxExempt}></input><label>Tax Exempt?</label>
-                <input type="number" onChange={handleQuantityOnChange} onBlur={handleQuantityOnBlur} name="quantity" value={quantity}></input><label>Item Quantity</label>
-                <p>Who was included in this item?</p>
-                {involvedPartiesCheckboxes}
-                <Button type="submit" onClick={validateInputs} variant="outlined">Submit Item</Button>
-            </form>
-            {alertMsg && <Alert
-            severity={alertStatus}
-            // title={alertStatus}
-            message={alertMsg}></Alert>}
-        </Box>
-      </Modal>
+            open={showModal}
+            onClose={toggleModal}
+            aria-labelledby="Add/edit item modal"
+            aria-describedby="modal to add items or edit item on bill"
+        >
+            <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                    {editItemMode ? 'Edit Item' : 'Add Item'}
+                </Typography>
+                <form>
+                    <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput} value={itemName}></input>
+                    <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput} value={itemCost}></input>
+                    <input type="checkbox" name="taxExemptCheckbox" onChange={handleTaxExempt} checked={taxExempt}></input><label>Tax Exempt?</label>
+                    <input type="number" onChange={handleQuantityOnChange} onBlur={handleQuantityOnBlur} name="quantity" value={quantity}></input><label>Item Quantity</label>
+                    <p>Who was included in this item?</p>
+                    {involvedPartiesCheckboxes}
+                    <Button type="submit" onClick={validateInputs} variant="outlined">Submit Item</Button>
+                </form>
+                {alertMsg && <Alert
+                severity={alertStatus}
+                // title={alertStatus}
+                message={alertMsg}></Alert>}
+            </Box>
+        </Modal>
     )
 }
 
