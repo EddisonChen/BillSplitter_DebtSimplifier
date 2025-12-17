@@ -9,47 +9,82 @@ import { useState } from 'react';
 
 const PartiesView = ({partyInformation}) => {
 
-    const [expand, setExpand] = useState();
+    const [expand, setExpand] = useState([]);
 
-    const handleExpand = (id) => {
-        setExpand(id)
+    const handleExpand = (trxId) => {
+        const temp = structuredClone(expand);
+        temp.push(trxId);
+        setExpand(temp);
     }
 
-    const handleShrink = () => {
-        setExpand(null);
+    const handleShrink = (trxId) => {
+        const filteredExpand = expand.filter((id) => (
+            id !== trxId
+        ));
+        setExpand(filteredExpand);
     }
 
     const mappedParties = partyInformation.map((party) => (
-        (expand === party.trxId ? 
-            (<TableRow key={party.trxId} onClick={handleShrink}>
-                <TableCell>{party.debtor}</TableCell>
-                
-            </TableRow>)
+        (expand.includes(party.trxId) ? 
+            (<Table key={party.trxId} onClick={(()=> {
+                handleShrink(party.trxId);
+            })}>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell align="left">Name:</TableCell>
+                            <TableCell align="left">{party.debtor}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell align="left">Base:</TableCell>
+                            <TableCell align="left">${parseFloat(party.baseAmount.toFixed(2))}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell align="left">Tax:</TableCell>
+                            <TableCell align="left">${parseFloat(party.taxAmount.toFixed(2))}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell align="left">Tip:</TableCell>
+                            <TableCell align="left">${parseFloat(party.tipAmount.toFixed(2))}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell align="left">Total:</TableCell>
+                            <TableCell align="left">${parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell align="left">Items:</TableCell>
+                            <TableCell align="left">
+                                <ul>
+                                    {party.items.map((item)=> (
+                                        <li key={item.itemId}>{item.itemName}</li>
+                                    ))}
+                                </ul>
+                                
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>)
             : 
-            (<TableRow key={party.trxId} value={party.trxId} onClick={(() => {
-                handleExpand(party.trxId)
-            })
-                }>
-                <TableCell >{party.debtor}</TableCell>
-                <TableCell>${party.totalAmountOwed}</TableCell>
-            </TableRow>))
-    ))
+            (<Table key={party.trxId} onClick={(()=> {
+                handleExpand(party.trxId);
+            })}>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell align="left">Name:</TableCell>
+                            <TableCell align="left">{party.debtor}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell align="left">Total Amount Owed:</TableCell>
+                            <TableCell align="left">{parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>)
+    )));
 
     return (
         <div>
             <h3>Parties</h3>
             <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left">Party</TableCell>
-                            <TableCell align="left">Amount Spent</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {mappedParties}
-                    </TableBody>
-                </Table>
+                {mappedParties}
             </TableContainer>
         </div>
         
