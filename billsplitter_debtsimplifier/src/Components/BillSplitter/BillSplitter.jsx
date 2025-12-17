@@ -41,7 +41,7 @@ const BillSplitter = ({parties}) => {
     const [tipAfterTax, setTipAfterTax] = useState(false);
     const [partyInformation, setPartyInformation] = useState([]);
     
-    const [editItemMode, setEditItemMode] = useState(false);
+    // const [editItemMode, setEditItemMode] = useState(false);
     const [tabView, setTabView] = useState(0);
     const [speedDialModal, setSpeedDialModal] = useState();
 
@@ -74,41 +74,10 @@ const BillSplitter = ({parties}) => {
         setShowModal(!showModal);
     };
 
-    const toggleEditMode = () => {
-        setEditItemMode(!editItemMode);
-    }
-
-    const handleRemoveItem = (event) => {
-        const id = event.target.value;
-        const updatedItems = items.filter(item => item.itemId !== id);
-        setItems(updatedItems);
-    }
-
     const handleTabView = (event, newValue) => {
         setTabView(newValue);
-    }
+    };
 
-    // Displays items on page with options to edit or remove
-    const showItems = itemsWithCalculations.map((item) => (
-        <tr key={item.itemId}>
-            <td onClick={toggleEditMode}>{item.itemName}</td>
-            <td>{item.itemCost}</td>
-            <td>{item.involvedParties}</td>
-            {editItemMode && <AddItem
-                editItemMode={editItemMode}
-                parties={tempParties}
-                toggleModal={toggleEditMode}
-                showModal={editItemMode}
-                items={items}
-                setItems={setItems}
-                itemId={item.itemId}
-                />
-                }
-            <button onClick={handleRemoveItem} value={item.itemId}>Remove Item</button>
-        </tr>
-    ));
-
-    
     useEffect(() => {
         //add up total cost of non-tax exempt items
         // if percentage - calculate tax only on non-exempt items
@@ -222,26 +191,11 @@ const BillSplitter = ({parties}) => {
 
     return (
         <div>
-            {/* <div>
-                {tempParties}
-            </div>
-            {parties && <button>Add to Debt Simplifier</button>}
-            {items.length > 0 && (
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Item Name:</th>
-                                <th>Item Cost:</th>
-                                <th>Split Between:</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {showItems}
-                        </tbody>
-                </table>
-                </div>
-            )} */}
+            {tabView === 2 && <ItemsView
+                itemsWithCalculations={itemsWithCalculations}
+                tempParties={tempParties}
+                items={items}
+                setItems={setItems}/>}
             {tabView === 1 && <PartiesView
                 partyInformation={partyInformation}/>}
             {tabView === 0 && <SummaryView
@@ -253,7 +207,7 @@ const BillSplitter = ({parties}) => {
                 payor={payor}
                 partyInformation={partyInformation}/>}
             {parties === undefined && 
-                <Button variant="outlined" onClick={handleShowAddPartyModal}>Add Party</Button>}
+                <Button variant="contained" onClick={handleShowAddPartyModal}>Add Party</Button>}
             {speedDialModal === "addTempParty" && <AddTempParty
                 showModal={showModal}
                 toggleModal={toggleModal}

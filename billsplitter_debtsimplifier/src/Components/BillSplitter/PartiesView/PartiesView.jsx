@@ -55,7 +55,7 @@ const PartiesView = ({partyInformation}) => {
                             <TableCell align="left">
                                 <ul>
                                     {party.items.map((item)=> (
-                                        <li key={item.itemId}>{item.itemName}</li>
+                                        <li key={item.itemId}>{item.quantity} {item.itemName}</li>
                                     ))}
                                 </ul>
                                 
@@ -73,8 +73,8 @@ const PartiesView = ({partyInformation}) => {
                             <TableCell align="left">{party.debtor}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell align="left">Total Amount Owed:</TableCell>
-                            <TableCell align="left">{parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
+                            <TableCell align="left">Final Amount Owed:</TableCell>
+                            <TableCell align="left">${parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>)
