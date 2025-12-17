@@ -17,6 +17,9 @@ import TollIcon from '@mui/icons-material/Toll';
 import PercentIcon from '@mui/icons-material/Percent';
 import './BillSplitter.css';
 import Button from "@mui/material/Button";
+import SummaryView from "./SummaryView/SummaryView";
+import PartiesView from "./PartiesView/PartiesView";
+import ItemsView from "./ItemsView/ItemsView";
 
 //Mui Tabs, Mui Speed Dial
 // receipt scanner
@@ -182,7 +185,10 @@ const BillSplitter = ({parties}) => {
                 partyCentric.push({
                     trxId: uuidv4(),
                     debtor: tempParties[i],
-                    amountOwed: 0,
+                    totalAmountOwed: 0,
+                    baseAmount: 0,
+                    tipAmount: 0,
+                    taxAmount: 0,
                     payor: payor || "Payor",
                     items: []
                 });
@@ -191,7 +197,10 @@ const BillSplitter = ({parties}) => {
                 for (let j=0; j<itemsWithCalculations.length; j++) {
                     if (itemsWithCalculations[j].involvedParties.includes(partyCentric[i].debtor)) {
                         const splitItemCost = itemsWithCalculations[j].totalCost/itemsWithCalculations[j].involvedParties.length;
-                        partyCentric[i].amountOwed += splitItemCost;
+                        partyCentric[i].totalAmountOwed += splitItemCost;
+                        partyCentric[i].baseAmount += itemsWithCalculations[j].itemCost/itemsWithCalculations[j].involvedParties.length;
+                        partyCentric[i].tipAmount += itemsWithCalculations[j].tipAmount/itemsWithCalculations[j].involvedParties.length;
+                        partyCentric[i].taxAmount += itemsWithCalculations[j].taxAmount/itemsWithCalculations[j].involvedParties.length;
                         partyCentric[i].items.push({
                             itemId:itemsWithCalculations[j].itemId,
                             itemName: itemsWithCalculations[j].itemName,
@@ -211,11 +220,9 @@ const BillSplitter = ({parties}) => {
     console.log(itemsWithCalculations)
     console.log(partyInformation)
 
-    console.log(speedDialModal)
-
     return (
         <div>
-            <div>
+            {/* <div>
                 {tempParties}
             </div>
             {parties && <button>Add to Debt Simplifier</button>}
@@ -233,20 +240,18 @@ const BillSplitter = ({parties}) => {
                             {showItems}
                         </tbody>
                 </table>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cost of Items</th>
-                            <th>Total Tip Amount:</th>
-                            <th>Final Cost</th>
-                        </tr>
-                    </thead>
-                    
-                </table>
                 </div>
-
-                
-            )}
+            )} */}
+            {tabView === 1 && <PartiesView
+                partyInformation={partyInformation}/>}
+            {tabView === 0 && <SummaryView
+                itemsWithCalculations={itemsWithCalculations}
+                taxInput={taxInput}
+                taxInputType={taxInputType}
+                tipInput={tipInput}
+                tipAfterTax={tipAfterTax}
+                payor={payor}
+                partyInformation={partyInformation}/>}
             {parties === undefined && 
                 <Button variant="outlined" onClick={handleShowAddPartyModal}>Add Party</Button>}
             {speedDialModal === "addTempParty" && <AddTempParty

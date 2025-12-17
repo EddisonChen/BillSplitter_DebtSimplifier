@@ -7,6 +7,7 @@ function App() {
 
   return (
     <div>
+      <h1>Cool App Name</h1>
       <BillSplitter/>
     </div>
   );
