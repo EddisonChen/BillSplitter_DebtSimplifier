@@ -20,9 +20,14 @@ import Button from "@mui/material/Button";
 import SummaryView from "./SummaryView/SummaryView";
 import PartiesView from "./PartiesView/PartiesView";
 import ItemsView from "./ItemsView/ItemsView";
+import json from '../../OCRsample.json'
+import OpenAI from "openai";
+import { zodTextFormat } from "openai/helpers/zod";
+import { z } from "zod";
 
 //Mui Tabs, Mui Speed Dial
-// receipt scanner
+// receipt scanner - involves: sending picture to backend, 
+
 // UI - Summary view: Total, tax, tip, amount owed to payor by parties
 // - Person view - List items, costs per party
 // - Item view - List people, costs per item
@@ -40,10 +45,52 @@ const BillSplitter = ({parties}) => {
     const [tipInput, setTipInput] = useState(0);
     const [tipAfterTax, setTipAfterTax] = useState(false);
     const [partyInformation, setPartyInformation] = useState([]);
+    const [aiResponse, setAiResponse] = useState();
     
+
     // const [editItemMode, setEditItemMode] = useState(false);
     const [tabView, setTabView] = useState(0);
     const [speedDialModal, setSpeedDialModal] = useState();
+
+    const itemPricePairing = z.object({
+        name: z.string(),
+        price: z.float64(),
+        quantity: z.int64(),
+    })
+
+    const client = new OpenAI({
+        dangerouslyAllowBrowser: true
+    });
+
+        const aishit = async () => {
+            const response = await client.responses.create({
+            model: "gpt-5-nano",
+            input: [
+                {
+                    role: "user",
+                    content: [
+                        {
+                            type: "input_text",
+                            text: "Please output key value pairs of items to prices, as well as tax, tip, and total price if applicable"
+                        },
+                        {
+                            type: "input_image",
+                            image_url: "https://ocr.space/Content/Images/receipt-ocr-original.jpg"
+                        }
+                    ]
+                }
+            ],
+            text: {
+                format: zodTextFormat(itemPricePairing, "")
+            }
+            });
+            setAiResponse(response.output_text);
+        }
+
+    console.log(aiResponse)
+
+
+    
 
     const speedDialActions = [
         {icon: <AddBoxIcon/>, name: "Add Item", operation: "addItem"},

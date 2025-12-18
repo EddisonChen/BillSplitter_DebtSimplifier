@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div>
-      <h1>Cool App Name</h1>
+      <h1 className="head">Bean Counter</h1>
       <BillSplitter/>
     </div>
   );

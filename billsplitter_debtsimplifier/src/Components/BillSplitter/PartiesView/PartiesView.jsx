@@ -80,7 +80,7 @@ const PartiesView = ({partyInformation}) => {
 
     return (
         <div>
-            <h3>Parties</h3>
+            <h3 className="head">Party Details</h3>
             <TableContainer component={Paper}>
                 {mappedParties}
             </TableContainer>

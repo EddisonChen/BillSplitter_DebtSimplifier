@@ -11,9 +11,14 @@ import AddItem from '../SpeedDialActions/AddItem';
 const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
 
     const [editItemMode, setEditItemMode] = useState(false);
+    const [editItemId, setEditItemId] = useState('');
 
     const toggleEditMode = () => {
         setEditItemMode(!editItemMode);
+    }
+
+    const handleItemId = (id) => {
+        setEditItemId(id)
     }
 
     const handleRemoveItem = (event) => {
@@ -25,7 +30,10 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
     const mappedItems = itemsWithCalculations.map((item) => (
         <div key={item.itemId} >
             <Table >
-                <TableBody onClick={toggleEditMode}>
+                <TableBody onClick={(()=> {
+                    toggleEditMode();
+                    handleItemId(item.itemId);
+                })}>
                     <TableRow >
                         <TableCell align="left">Name (Quantity):</TableCell>
                         <TableCell align="left">{item.itemName} ({item.quantity})</TableCell>
@@ -35,17 +43,17 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
                         <TableCell align="left">${parseFloat(item.totalCost.toFixed(2))} {item.quantity > 1 && item.totalCost > 0 ? `($${parseFloat((item.singleItemValues.totalCost).toFixed(2))} per)`: null}</TableCell>
                     </TableRow>
                     <TableRow >
-                        <TableCell align="left">Split Between</TableCell>
+                        <TableCell align="left">Split Between: </TableCell>
                         <TableCell align="left">
                             <ul>
                                 {item.involvedParties.map((party)=> (
-                                    <li key={item.itemId}>{party}</li>
+                                    <li key={party}>{party}</li>
                                 ))}
                             </ul>
                         </TableCell>
                     </TableRow>
                 </TableBody>
-                {editItemMode && <AddItem
+                {editItemMode && editItemId == item.itemId && <AddItem
                     editItemMode={editItemMode}
                     parties={tempParties}
                     toggleModal={toggleEditMode}
@@ -62,7 +70,7 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
 
     return (
         <div>
-            <h3>Items</h3>
+            <h3 className="head">Item Details</h3>
             <TableContainer component={Paper}>
                 {mappedItems}
             </TableContainer>

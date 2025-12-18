@@ -6,15 +6,26 @@ import Button from "@mui/material/Button";
 import Alert from "../../../MiniComponents/MuiAlert/MuiAlert";
 import { v4 as uuidv4 } from 'uuid';
 
+// fix success alert message
+// fix uncontroll price input
+// when trying to edit items, only able to edit most recently added
+
 const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems, itemId}) => {
 
     const [involvedParties, setInvolvedParties] = useState([]);
-    const [itemCost, setItemCost] = useState();
-    const [itemName, setItemName] = useState();
+    const [itemCost, setItemCost] = useState(0);
+    const [itemName, setItemName] = useState('');
     const [alertMsg, setAlertMsg] = useState();
     const [taxExempt, setTaxExempt] = useState(false);
     const [alertStatus, setAlertStatus] = useState();
     const [quantity, setQuantity] = useState(1);
+
+    // useEffect(()=> {
+    //     setAlertStatus();
+    //     setAlertMsg();
+    // }, [items]);
+
+    console.log(editItemMode, itemId)
 
     useEffect(() => {
         if (editItemMode) {
@@ -131,20 +142,20 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
         event.preventDefault();
         if (itemCost === undefined || itemCost === "" || itemCost === 0) {
             setAlertMsg("Please enter item cost!");
-            setAlertStatus("warning")
+            setAlertStatus("warning");
         } else if (itemName === undefined || itemName === "") {
             setAlertMsg("Please enter item name!");
-            setAlertStatus("warning")
+            setAlertStatus("warning");
         } else if (involvedParties.length < 1) {
             setAlertMsg("Please select at least one party");
-            setAlertStatus("warning")
+            setAlertStatus("warning");
         } else if (quantity === "" || quantity === undefined || quantity === 0) {
             setAlertMsg("Please enter item quantity of at least 1");
-            setAlertStatus("warning")
+            setAlertStatus("warning");
         } else {
             handleSubmit();
-            setAlertMsg("Item submitted successfully!")
-            setAlertStatus("success")
+            setAlertMsg("Item submitted successfully!");
+            setAlertStatus("success");
         }
     }
 

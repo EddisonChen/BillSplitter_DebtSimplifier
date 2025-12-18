@@ -1,0 +1,903 @@
+{
+  "ParsedResults": [
+    {
+      "Overlay": {
+        "Lines": [
+          {
+            "LineText": "ph 856-764-6161",
+            "Words": [
+              {
+                "WordText": "ph",
+                "Left": 1295,
+                "Top": 52,
+                "Height": 74.5,
+                "Width": 63.5
+              },
+              {
+                "WordText": "856-764-6161",
+                "Left": 1397.5,
+                "Top": 29,
+                "Height": 82,
+                "Width": 401
+              }
+            ],
+            "MaxHeight": 82,
+            "MinTop": 29
+          },
+          {
+            "LineText": "Guest check",
+            "Words": [
+              {
+                "WordText": "Guest",
+                "Left": 1372,
+                "Top": 348,
+                "Height": 64,
+                "Width": 163.5
+              },
+              {
+                "WordText": "check",
+                "Left": 1574,
+                "Top": 335.5,
+                "Height": 69.5,
+                "Width": 163.5
+              }
+            ],
+            "MaxHeight": 69.5,
+            "MinTop": 335.5
+          },
+          {
+            "LineText": "Thank You for Visiting",
+            "Words": [
+              {
+                "WordText": "Thank",
+                "Left": 1205,
+                "Top": 450.5,
+                "Height": 66.5,
+                "Width": 163
+              },
+              {
+                "WordText": "You",
+                "Left": 1407.5,
+                "Top": 451,
+                "Height": 60,
+                "Width": 96
+              },
+              {
+                "WordText": "for",
+                "Left": 1545.5,
+                "Top": 444,
+                "Height": 62,
+                "Width": 92.5
+              },
+              {
+                "WordText": "Visiting",
+                "Left": 1677.5,
+                "Top": 422.5,
+                "Height": 73.5,
+                "Width": 275
+              }
+            ],
+            "MaxHeight": 73.5,
+            "MinTop": 422.5
+          },
+          {
+            "LineText": "1 Guest",
+            "Words": [
+              {
+                "WordText": "1",
+                "Left": 1654.5,
+                "Top": 634.5,
+                "Height": 54.5,
+                "Width": 15
+              },
+              {
+                "WordText": "Guest",
+                "Left": 1717.5,
+                "Top": 601,
+                "Height": 77.5,
+                "Width": 169.5
+              }
+            ],
+            "MaxHeight": 77.5,
+            "MinTop": 601
+          },
+          {
+            "LineText": "TABLE: 17 -",
+            "Words": [
+              {
+                "WordText": "TABLE:",
+                "Left": 1246,
+                "Top": 648.5,
+                "Height": 61.5,
+                "Width": 186.5
+              },
+              {
+                "WordText": "17",
+                "Left": 1485,
+                "Top": 641.5,
+                "Height": 59,
+                "Width": 56
+              },
+              {
+                "WordText": "-",
+                "Left": 1582,
+                "Top": 663,
+                "Height": 8.5,
+                "Width": 27
+              }
+            ],
+            "MaxHeight": 61.5,
+            "MinTop": 641.5
+          },
+          {
+            "LineText": "Your Server was Yusuf",
+            "Words": [
+              {
+                "WordText": "Your",
+                "Left": 1216,
+                "Top": 747.5,
+                "Height": 57,
+                "Width": 127.5
+              },
+              {
+                "WordText": "Server",
+                "Left": 1383,
+                "Top": 744.5,
+                "Height": 54,
+                "Width": 194.5
+              },
+              {
+                "WordText": "was",
+                "Left": 1618.5,
+                "Top": 734,
+                "Height": 49.5,
+                "Width": 97.5
+              },
+              {
+                "WordText": "Yusuf",
+                "Left": 1754.5,
+                "Top": 681.5,
+                "Height": 81,
+                "Width": 170.5
+              }
+            ],
+            "MaxHeight": 81,
+            "MinTop": 681.5
+          },
+          {
+            "LineText": "8/3/2025 AM",
+            "Words": [
+              {
+                "WordText": "8/3/2025",
+                "Left": 1253.5,
+                "Top": 830,
+                "Height": 73.5,
+                "Width": 260.5
+              },
+              {
+                "WordText": "AM",
+                "Left": 1864.5,
+                "Top": 774.5,
+                "Height": 61,
+                "Width": 65.5
+              }
+            ],
+            "MaxHeight": 73.5,
+            "MinTop": 774.5
+          },
+          {
+            "LineText": "Sequence It: 0000360",
+            "Words": [
+              {
+                "WordText": "Sequence",
+                "Left": 1257,
+                "Top": 935,
+                "Height": 62.5,
+                "Width": 260.5
+              },
+              {
+                "WordText": "It:",
+                "Left": 1557,
+                "Top": 915,
+                "Height": 54.5,
+                "Width": 53
+              },
+              {
+                "WordText": "0000360",
+                "Left": 1658.5,
+                "Top": 870,
+                "Height": 85.5,
+                "Width": 238.5
+              }
+            ],
+            "MaxHeight": 85.5,
+            "MinTop": 870
+          },
+          {
+            "LineText": "ITEM",
+            "Words": [
+              {
+                "WordText": "ITEM",
+                "Left": 906,
+                "Top": 1125.5,
+                "Height": 59.5,
+                "Width": 124
+              }
+            ],
+            "MaxHeight": 59.5,
+            "MinTop": 1125.5
+          },
+          {
+            "LineText": "Cheeseburger",
+            "Words": [
+              {
+                "WordText": "Cheeseburger",
+                "Left": 911,
+                "Top": 1304.5,
+                "Height": 63,
+                "Width": 387
+              }
+            ],
+            "MaxHeight": 63,
+            "MinTop": 1304.5
+          },
+          {
+            "LineText": "Deluxe",
+            "Words": [
+              {
+                "WordText": "Deluxe",
+                "Left": 1083,
+                "Top": 1482,
+                "Height": 57.5,
+                "Width": 189
+              }
+            ],
+            "MaxHeight": 57.5,
+            "MinTop": 1482
+          },
+          {
+            "LineText": "Well",
+            "Words": [
+              {
+                "WordText": "Well",
+                "Left": 1086.5,
+                "Top": 1566.5,
+                "Height": 60,
+                "Width": 116.5
+              }
+            ],
+            "MaxHeight": 60,
+            "MinTop": 1566.5
+          },
+          {
+            "LineText": "alliburger Deluxe",
+            "Words": [
+              {
+                "WordText": "alliburger",
+                "Left": 961,
+                "Top": 1662,
+                "Height": 54,
+                "Width": 248
+              },
+              {
+                "WordText": "Deluxe",
+                "Left": 1245,
+                "Top": 1642.5,
+                "Height": 57.5,
+                "Width": 193.5
+              }
+            ],
+            "MaxHeight": 57.5,
+            "MinTop": 1642.5
+          },
+          {
+            "LineText": "1",
+            "Words": [
+              {
+                "WordText": "1",
+                "Left": 929,
+                "Top": 1749.5,
+                "Height": 47.5,
+                "Width": 14
+              }
+            ],
+            "MaxHeight": 47.5,
+            "MinTop": 1749.5
+          },
+          {
+            "LineText": "Well",
+            "Words": [
+              {
+                "WordText": "Well",
+                "Left": 1073.5,
+                "Top": 1813.5,
+                "Height": 55.5,
+                "Width": 118.5
+              }
+            ],
+            "MaxHeight": 55.5,
+            "MinTop": 1813.5
+          },
+          {
+            "LineText": "Meat lover J s 0m let",
+            "Words": [
+              {
+                "WordText": "Meat",
+                "Left": 902.5,
+                "Top": 1905.5,
+                "Height": 53.5,
+                "Width": 126.5
+              },
+              {
+                "WordText": "lover",
+                "Left": 1039.5,
+                "Top": 1901.5,
+                "Height": 54,
+                "Width": 156.5
+              },
+              {
+                "WordText": "J",
+                "Left": 1213,
+                "Top": 1897,
+                "Height": 19,
+                "Width": 6
+              },
+              {
+                "WordText": "s",
+                "Left": 1235,
+                "Top": 1913.5,
+                "Height": 38.5,
+                "Width": 28.5
+              },
+              {
+                "WordText": "0m",
+                "Left": 1303.5,
+                "Top": 1898.5,
+                "Height": 54.5,
+                "Width": 63.5
+              },
+              {
+                "WordText": "let",
+                "Left": 1379,
+                "Top": 1895.5,
+                "Height": 56,
+                "Width": 92
+              }
+            ],
+            "MaxHeight": 56,
+            "MinTop": 1895.5
+          },
+          {
+            "LineText": "1",
+            "Words": [
+              {
+                "WordText": "1",
+                "Left": 904,
+                "Top": 1993.5,
+                "Height": 53.5,
+                "Width": 13.5
+              }
+            ],
+            "MaxHeight": 53.5,
+            "MinTop": 1993.5
+          },
+          {
+            "LineText": "Add Spinach",
+            "Words": [
+              {
+                "WordText": "Add",
+                "Left": 1063,
+                "Top": 2080,
+                "Height": 59,
+                "Width": 97
+              },
+              {
+                "WordText": "Spinach",
+                "Left": 1200,
+                "Top": 2080,
+                "Height": 69.5,
+                "Width": 236.5
+              }
+            ],
+            "MaxHeight": 69.5,
+            "MinTop": 2080
+          },
+          {
+            "LineText": "Shrimp Fettuccine",
+            "Words": [
+              {
+                "WordText": "Shrimp",
+                "Left": 894.5,
+                "Top": 2171,
+                "Height": 70,
+                "Width": 198
+              },
+              {
+                "WordText": "Fettuccine",
+                "Left": 1131.5,
+                "Top": 2175,
+                "Height": 55.5,
+                "Width": 339
+              }
+            ],
+            "MaxHeight": 70,
+            "MinTop": 2171
+          },
+          {
+            "LineText": "1",
+            "Words": [
+              {
+                "WordText": "1",
+                "Left": 901,
+                "Top": 2266.5,
+                "Height": 52.5,
+                "Width": 15.5
+              }
+            ],
+            "MaxHeight": 52.5,
+            "MinTop": 2266.5
+          },
+          {
+            "LineText": "Soda",
+            "Words": [
+              {
+                "WordText": "Soda",
+                "Left": 899,
+                "Top": 2351.5,
+                "Height": 55,
+                "Width": 129.5
+              }
+            ],
+            "MaxHeight": 55,
+            "MinTop": 2351.5
+          },
+          {
+            "LineText": "1",
+            "Words": [
+              {
+                "WordText": "1",
+                "Left": 908.5,
+                "Top": 2440,
+                "Height": 52,
+                "Width": 13.5
+              }
+            ],
+            "MaxHeight": 52,
+            "MinTop": 2440
+          },
+          {
+            "LineText": "Veggie Ornlet",
+            "Words": [
+              {
+                "WordText": "Veggie",
+                "Left": 905,
+                "Top": 2524.5,
+                "Height": 60.5,
+                "Width": 194
+              },
+              {
+                "WordText": "Ornlet",
+                "Left": 1138,
+                "Top": 2522.5,
+                "Height": 53,
+                "Width": 161
+              }
+            ],
+            "MaxHeight": 60.5,
+            "MinTop": 2522.5
+          },
+          {
+            "LineText": "Add Spinach",
+            "Words": [
+              {
+                "WordText": "Add",
+                "Left": 1075.5,
+                "Top": 2687,
+                "Height": 51.5,
+                "Width": 93.5
+              },
+              {
+                "WordText": "Spinach",
+                "Left": 1207,
+                "Top": 2689.5,
+                "Height": 59.5,
+                "Width": 225.5
+              }
+            ],
+            "MaxHeight": 59.5,
+            "MinTop": 2687
+          },
+          {
+            "LineText": "0625913",
+            "Words": [
+              {
+                "WordText": "0625913",
+                "Left": 1559.5,
+                "Top": 976.5,
+                "Height": 81,
+                "Width": 234
+              }
+            ],
+            "MaxHeight": 81,
+            "MinTop": 976.5
+          },
+          {
+            "LineText": "A1 fredo",
+            "Words": [
+              {
+                "WordText": "A1",
+                "Left": 1513.5,
+                "Top": 2171.5,
+                "Height": 57.5,
+                "Width": 54.5
+              },
+              {
+                "WordText": "fredo",
+                "Left": 1584,
+                "Top": 2169.5,
+                "Height": 58,
+                "Width": 164
+              }
+            ],
+            "MaxHeight": 58,
+            "MinTop": 2169.5
+          },
+          {
+            "LineText": "$12.31",
+            "Words": [
+              {
+                "WordText": "$12.31",
+                "Left": 1056.5,
+                "Top": 3343,
+                "Height": 56.5,
+                "Width": 177.5
+              }
+            ],
+            "MaxHeight": 56.5,
+            "MinTop": 3343
+          },
+          {
+            "LineText": "Subtotal",
+            "Words": [
+              {
+                "WordText": "Subtotal",
+                "Left": 1404,
+                "Top": 2849.5,
+                "Height": 52.5,
+                "Width": 249
+              }
+            ],
+            "MaxHeight": 52.5,
+            "MinTop": 2849.5
+          },
+          {
+            "LineText": "Total Taxes",
+            "Words": [
+              {
+                "WordText": "Total",
+                "Left": 1404,
+                "Top": 2932,
+                "Height": 52,
+                "Width": 151.5
+              },
+              {
+                "WordText": "Taxes",
+                "Left": 1600,
+                "Top": 2935,
+                "Height": 50.5,
+                "Width": 157.5
+              }
+            ],
+            "MaxHeight": 52,
+            "MinTop": 2932
+          },
+          {
+            "LineText": "Grand Total",
+            "Words": [
+              {
+                "WordText": "Grand",
+                "Left": 1404.5,
+                "Top": 3097.5,
+                "Height": 52.5,
+                "Width": 156.5
+              },
+              {
+                "WordText": "Total",
+                "Left": 1598,
+                "Top": 3099,
+                "Height": 52,
+                "Width": 151
+              }
+            ],
+            "MaxHeight": 52.5,
+            "MinTop": 3097.5
+          },
+          {
+            "LineText": "Amount Due:",
+            "Words": [
+              {
+                "WordText": "Amount",
+                "Left": 1404.5,
+                "Top": 3179.5,
+                "Height": 52.5,
+                "Width": 188
+              },
+              {
+                "WordText": "Due:",
+                "Left": 1629.5,
+                "Top": 3183,
+                "Height": 50.5,
+                "Width": 116
+              }
+            ],
+            "MaxHeight": 52.5,
+            "MinTop": 3179.5
+          },
+          {
+            "LineText": "$16.41",
+            "Words": [
+              {
+                "WordText": "$16.41",
+                "Left": 1501,
+                "Top": 3342.5,
+                "Height": 54,
+                "Width": 179.5
+              }
+            ],
+            "MaxHeight": 54,
+            "MinTop": 3342.5
+          },
+          {
+            "LineText": "Guest Check",
+            "Words": [
+              {
+                "WordText": "Guest",
+                "Left": 1406.5,
+                "Top": 3506.5,
+                "Height": 52.5,
+                "Width": 154
+              },
+              {
+                "WordText": "Check",
+                "Left": 1597,
+                "Top": 3504,
+                "Height": 55.5,
+                "Width": 153.5
+              }
+            ],
+            "MaxHeight": 55.5,
+            "MinTop": 3504
+          },
+          {
+            "LineText": "oTY PRICE",
+            "Words": [
+              {
+                "WordText": "oTY",
+                "Left": 2017,
+                "Top": 1037.5,
+                "Height": 56,
+                "Width": 100
+              },
+              {
+                "WordText": "PRICE",
+                "Left": 2159.5,
+                "Top": 1024,
+                "Height": 65,
+                "Width": 174
+              }
+            ],
+            "MaxHeight": 65,
+            "MinTop": 1024
+          },
+          {
+            "LineText": "$11.99",
+            "Words": [
+              {
+                "WordText": "$11.99",
+                "Left": 2099,
+                "Top": 1315.5,
+                "Height": 64,
+                "Width": 203.5
+              }
+            ],
+            "MaxHeight": 64,
+            "MinTop": 1315.5
+          },
+          {
+            "LineText": "$2.00",
+            "Words": [
+              {
+                "WordText": "$2.00",
+                "Left": 2172,
+                "Top": 1408.5,
+                "Height": 63.5,
+                "Width": 169.5
+              }
+            ],
+            "MaxHeight": 63.5,
+            "MinTop": 1408.5
+          },
+          {
+            "LineText": "$12.99",
+            "Words": [
+              {
+                "WordText": "$12.99",
+                "Left": 2111,
+                "Top": 1692.5,
+                "Height": 67.5,
+                "Width": 203
+              }
+            ],
+            "MaxHeight": 67.5,
+            "MinTop": 1692.5
+          },
+          {
+            "LineText": "$11.99",
+            "Words": [
+              {
+                "WordText": "$11.99",
+                "Left": 2103.5,
+                "Top": 1977.5,
+                "Height": 63.5,
+                "Width": 199
+              }
+            ],
+            "MaxHeight": 63.5,
+            "MinTop": 1977.5
+          },
+          {
+            "LineText": "$0.50",
+            "Words": [
+              {
+                "WordText": "$0.50",
+                "Left": 2167,
+                "Top": 2068,
+                "Height": 63.5,
+                "Width": 166.5
+              }
+            ],
+            "MaxHeight": 63.5,
+            "MinTop": 2068
+          },
+          {
+            "LineText": "$22.99",
+            "Words": [
+              {
+                "WordText": "$22.99",
+                "Left": 2093.5,
+                "Top": 2250.5,
+                "Height": 64,
+                "Width": 196.5
+              }
+            ],
+            "MaxHeight": 64,
+            "MinTop": 2250.5
+          },
+          {
+            "LineText": "$2.99",
+            "Words": [
+              {
+                "WordText": "$2.99",
+                "Left": 2117,
+                "Top": 2428,
+                "Height": 61,
+                "Width": 162.5
+              }
+            ],
+            "MaxHeight": 61,
+            "MinTop": 2428
+          },
+          {
+            "LineText": "$10.99",
+            "Words": [
+              {
+                "WordText": "$10.99",
+                "Left": 2074,
+                "Top": 2604,
+                "Height": 56.5,
+                "Width": 198.5
+              }
+            ],
+            "MaxHeight": 56.5,
+            "MinTop": 2604
+          },
+          {
+            "LineText": "$0.50",
+            "Words": [
+              {
+                "WordText": "$0.50",
+                "Left": 2136,
+                "Top": 2687.5,
+                "Height": 53.5,
+                "Width": 167.5
+              }
+            ],
+            "MaxHeight": 53.5,
+            "MinTop": 2687.5
+          },
+          {
+            "LineText": "$76.94",
+            "Words": [
+              {
+                "WordText": "$76.94",
+                "Left": 2096.5,
+                "Top": 2857,
+                "Height": 59,
+                "Width": 201
+              }
+            ],
+            "MaxHeight": 59,
+            "MinTop": 2857
+          },
+          {
+            "LineText": "$5.10",
+            "Words": [
+              {
+                "WordText": "$5.10",
+                "Left": 2129,
+                "Top": 2944,
+                "Height": 58.5,
+                "Width": 168
+              }
+            ],
+            "MaxHeight": 58.5,
+            "MinTop": 2944
+          },
+          {
+            "LineText": "$82.04",
+            "Words": [
+              {
+                "WordText": "$82.04",
+                "Left": 2092,
+                "Top": 3114.5,
+                "Height": 64,
+                "Width": 201
+              }
+            ],
+            "MaxHeight": 64,
+            "MinTop": 3114.5
+          },
+          {
+            "LineText": "$82.04",
+            "Words": [
+              {
+                "WordText": "$82.04",
+                "Left": 2091,
+                "Top": 3199,
+                "Height": 67.5,
+                "Width": 202
+              }
+            ],
+            "MaxHeight": 67.5,
+            "MinTop": 3199
+          },
+          {
+            "LineText": "$20.51",
+            "Words": [
+              {
+                "WordText": "$20.51",
+                "Left": 1955,
+                "Top": 3358.5,
+                "Height": 62.5,
+                "Width": 188.5
+              }
+            ],
+            "MaxHeight": 62.5,
+            "MinTop": 3358.5
+          }
+        ],
+        "HasOverlay": true,
+        "Message": "Total lines: 48"
+      },
+      "FileParseExitCode": 1,
+      "TextOrientation": "0",
+      "ParsedText": "ph 856-764-6161\t\r\nGuest check\t\r\nThank You for Visiting\t\r\nTABLE: 17 -\t1 Guest\t\r\nYour Server was Yusuf\t\r\n8/3/2025 AM\t\r\nSequence It: 0000360\t\r\n0625913\toTY PRICE\t\r\nITEM\t\r\nCheeseburger\t$11.99\t\r\n$2.00\t\r\nDeluxe\t\r\nWell\t\r\nalliburger Deluxe\t\r\n$12.99\t\r\n1\t\r\nWell\t\r\nMeat lover J s 0m let\t\r\n1\t$11.99\t\r\nAdd Spinach\t$0.50\t\r\nShrimp Fettuccine\tA1 fredo\t\r\n1\t$22.99\t\r\nSoda\t\r\n1\t$2.99\t\r\nVeggie Ornlet\t\r\n$10.99\t\r\nAdd Spinach\t$0.50\t\r\nSubtotal\t$76.94\t\r\nTotal Taxes\t$5.10\t\r\nGrand Total\t$82.04\t\r\nAmount Due:\t\r\n$82.04\t\r\n$12.31\t$16.41\t$20.51\t\r\nGuest Check\t\r\n",
+      "ErrorMessage": "",
+      "ErrorDetails": ""
+    }
+  ],
+  "OCRExitCode": 1,
+  "IsErroredOnProcessing": false,
+  "ProcessingTimeInMilliseconds": 3.859,
+  "SearchablePDFURL": "https://api.ocr.space/SearchablePDF/268da0ec-fcd3-49cc-9eb9-b783775db8c5.pdf"
+}

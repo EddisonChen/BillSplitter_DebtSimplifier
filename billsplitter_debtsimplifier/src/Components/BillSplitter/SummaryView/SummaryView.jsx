@@ -59,7 +59,7 @@ const SummaryView = ({itemsWithCalculations, taxInput, taxInputType, tipInput, t
 
 return (
     <div>
-        <h3>Bill Summary</h3>
+        <h3 className="head">Bill Summary</h3>
         <TableContainer component={Paper}>
             <Table aria-label="summary of costs table">
                 <TableBody>
