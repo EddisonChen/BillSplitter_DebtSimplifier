@@ -54,7 +54,7 @@ const PartiesView = ({partyInformation}) => {
                             <TableCell align="left">
                                 <ul>
                                     {party.items.map((item)=> (
-                                        <li key={item.itemId}>{item.quantity} {item.itemName}</li>
+                                        <li key={item.itemId}>{item.itemName} ({item.quantity}) </li>
                                     ))}
                                 </ul>
                             </TableCell>

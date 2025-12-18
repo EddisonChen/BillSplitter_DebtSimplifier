@@ -52,42 +52,42 @@ const BillSplitter = ({parties}) => {
     const [tabView, setTabView] = useState(0);
     const [speedDialModal, setSpeedDialModal] = useState();
 
-    const itemPricePairing = z.object({
-        name: z.string(),
-        price: z.float64(),
-        quantity: z.int64(),
-    })
+    // const itemPricePairing = z.object({
+    //     name: z.string(),
+    //     price: z.float64(),
+    //     quantity: z.int64(),
+    // })
 
-    const client = new OpenAI({
-        dangerouslyAllowBrowser: true
-    });
+    // const client = new OpenAI({
+    //     dangerouslyAllowBrowser: true
+    // });
 
-        const aishit = async () => {
-            const response = await client.responses.create({
-            model: "gpt-5-nano",
-            input: [
-                {
-                    role: "user",
-                    content: [
-                        {
-                            type: "input_text",
-                            text: "Please output key value pairs of items to prices, as well as tax, tip, and total price if applicable"
-                        },
-                        {
-                            type: "input_image",
-                            image_url: "https://ocr.space/Content/Images/receipt-ocr-original.jpg"
-                        }
-                    ]
-                }
-            ],
-            text: {
-                format: zodTextFormat(itemPricePairing, "")
-            }
-            });
-            setAiResponse(response.output_text);
-        }
+    //     const aishit = async () => {
+    //         const response = await client.responses.create({
+    //         model: "gpt-5-nano",
+    //         input: [
+    //             {
+    //                 role: "user",
+    //                 content: [
+    //                     {
+    //                         type: "input_text",
+    //                         text: "Please output key value pairs of items to prices, as well as tax, tip, and total price if applicable"
+    //                     },
+    //                     {
+    //                         type: "input_image",
+    //                         image_url: "https://ocr.space/Content/Images/receipt-ocr-original.jpg"
+    //                     }
+    //                 ]
+    //             }
+    //         ],
+    //         text: {
+    //             format: zodTextFormat(itemPricePairing, "")
+    //         }
+    //         });
+    //         setAiResponse(response.output_text);
+    //     }
 
-    console.log(aiResponse)
+    // console.log(aiResponse)
 
 
     
