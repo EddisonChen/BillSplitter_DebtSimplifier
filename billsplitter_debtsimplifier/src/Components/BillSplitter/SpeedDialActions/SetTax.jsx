@@ -34,15 +34,13 @@ const SetTax = ({showModal, toggleModal, setTaxInput, setTaxInputType}) => {
                 <Typography>
                     Set Tax
                 </Typography>
-                <div>
+                <form>
                     <input type="number" placeholder="Tax" onChange={handleTaxInput}></input>
-                    <div>
-                        <p>Tax Input Type</p>
-                        <input type="radio" name="Tax Input Type" value="percentage" defaultChecked onChange={handleTaxInputTypeSwitch}></input><label>Percentage</label>
-                        <input type="radio" name="Tax Input Type" value="amount" onChange={handleTaxInputTypeSwitch}></input><label>Dollar Amount</label>
-                    </div>
+                    <p>Tax Input Type</p>
+                    <input type="radio" name="Tax Input Type" value="percentage" defaultChecked onChange={handleTaxInputTypeSwitch}></input><label>Percentage</label>
+                    <input type="radio" name="Tax Input Type" value="amount" onChange={handleTaxInputTypeSwitch}></input><label>Dollar Amount</label>
                     <Button type="submit" onClick={toggleModal} variant="outlined">Submit</Button>           
-                </div>
+                </form>
             </Box>
 
         </Modal>

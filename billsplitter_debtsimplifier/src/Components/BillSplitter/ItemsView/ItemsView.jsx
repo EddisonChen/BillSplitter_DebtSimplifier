@@ -35,11 +35,11 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
                         <TableCell align="left">${parseFloat(item.totalCost.toFixed(2))} {item.quantity > 1 && item.totalCost > 0 ? `($${parseFloat((item.singleItemValues.totalCost).toFixed(2))} per)`: null}</TableCell>
                     </TableRow>
                     <TableRow >
-                        <TableCell align="left">Split Between</TableCell>
+                        <TableCell align="left">Split Between: </TableCell>
                         <TableCell align="left">
                             <ul>
                                 {item.involvedParties.map((party)=> (
-                                    <li key={item.itemId}>{party}</li>
+                                    <li key={party}>{party}</li>
                                 ))}
                             </ul>
                         </TableCell>

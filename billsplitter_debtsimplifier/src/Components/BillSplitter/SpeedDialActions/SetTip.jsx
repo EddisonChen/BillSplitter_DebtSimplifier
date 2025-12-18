@@ -34,11 +34,11 @@ const SetTip = ({showModal, toggleModal, setTipInput, tipAfterTax, setTipAfterTa
                 <Typography>
                     Set Tax
                 </Typography>
-                <div>
+                <form>
                     <input type="number" placeholder="Tip %" onChange={handleTipInput}></input>
                     <input type="checkbox" onChange={handleTipAfterTax}></input><label>Tip After Tax?</label>
                     <Button type="submit" onClick={toggleModal} variant="outlined">Submit</Button>        
-                </div>
+                </form>
             </Box>
 
         </Modal>
