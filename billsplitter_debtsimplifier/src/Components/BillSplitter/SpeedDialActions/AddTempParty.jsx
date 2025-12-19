@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import MuiAlert from "../../../MiniComponents/MuiAlert/MuiAlert";
+import IconButton from '@mui/material/IconButton';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const AddTempParty = ({showModal, toggleModal, tempParties, partyInput, setPartyInput, setTempParties}) => {
 
@@ -50,7 +52,7 @@ const AddTempParty = ({showModal, toggleModal, tempParties, partyInput, setParty
                 </Typography>
                  <form>
                     <input type="text" placeholder="Party Name" value={partyInput} onChange={handlePartyInputChange}></input>
-                    <Button type="submit" onClick={addTempParty}>Add Party</Button>
+                    <IconButton type="submit" onClick={addTempParty}><PersonAddIcon/></IconButton>
                 </form>
                 <ol>
                     {tempParties.map(party => (

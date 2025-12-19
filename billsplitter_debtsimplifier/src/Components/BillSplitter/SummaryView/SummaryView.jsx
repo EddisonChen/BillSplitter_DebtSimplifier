@@ -5,8 +5,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import IconButton from '@mui/material/IconButton';
 
-const SummaryView = ({itemsWithCalculations, taxInput, taxInputType, tipInput, tipAfterTax, payor}) => {
+const SummaryView = ({itemsWithCalculations, taxInput, taxInputType, tipInput, tipAfterTax, payor, parties, handleShowAddPartyModal}) => {
 
     const [totalBaseCostDisplay, setTotalBaseCostDisplay] = useState();
     const [taxDisplay, setTaxDisplay] = useState();
@@ -46,7 +49,7 @@ const SummaryView = ({itemsWithCalculations, taxInput, taxInputType, tipInput, t
                 setTaxDisplay(`${parseFloat(taxInput.toFixed(1))}%, $${parseFloat(sumTaxAmount.toFixed(2))}`);
             } else {
                 const calculatedTaxPercentage = parseFloat((sumTaxAmount/sumTaxableItems).toFixed(1));
-                setTaxDisplay(`${calculatedTaxPercentage}%, $${parseFloat(taxInput.toFixed(2))}`);
+                setTaxDisplay(`${Number.isFinite(calculatedTaxPercentage) ? calculatedTaxPercentage : 0}%, $${parseFloat(taxInput.toFixed(2))}`);
             }
 
             setTipDisplay(`${parseFloat((tipInput*100).toFixed(1))}%, $${parseFloat(sumTipAmount.toFixed(2))}`);
@@ -59,7 +62,11 @@ const SummaryView = ({itemsWithCalculations, taxInput, taxInputType, tipInput, t
 
 return (
     <div>
-        <h3 className="head">Bill Summary</h3>
+        <div className="tab-header">
+            <h3 className="head">Bill Summary</h3>
+            {parties === undefined && 
+                <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}>Add Party</Button>}
+        </div>
         <TableContainer component={Paper}>
             <Table aria-label="summary of costs table">
                 <TableBody>

@@ -238,23 +238,6 @@ const BillSplitter = ({parties}) => {
 
     return (
         <div>
-            {tabView === 2 && <ItemsView
-                itemsWithCalculations={itemsWithCalculations}
-                tempParties={tempParties}
-                items={items}
-                setItems={setItems}/>}
-            {tabView === 1 && <PartiesView
-                partyInformation={partyInformation}/>}
-            {tabView === 0 && <SummaryView
-                itemsWithCalculations={itemsWithCalculations}
-                taxInput={taxInput}
-                taxInputType={taxInputType}
-                tipInput={tipInput}
-                tipAfterTax={tipAfterTax}
-                payor={payor}
-                partyInformation={partyInformation}/>}
-            {parties === undefined && 
-                <Button variant="contained" onClick={handleShowAddPartyModal}>Add Party</Button>}
             {speedDialModal === "addTempParty" && <AddTempParty
                 showModal={showModal}
                 toggleModal={toggleModal}
@@ -262,22 +245,47 @@ const BillSplitter = ({parties}) => {
                 partyInput={partyInput}
                 setPartyInput={setPartyInput}
                 setTempParties={setTempParties}/>}
+            {tabView === 2 && <ItemsView
+                itemsWithCalculations={itemsWithCalculations}
+                tempParties={tempParties}
+                items={items}
+                setItems={setItems}
+                parties={parties}
+                handleShowAddPartyModal={handleShowAddPartyModal}/>}
+            {tabView === 1 && <PartiesView
+                partyInformation={partyInformation}
+                parties={parties}
+                handleShowAddPartyModal={handleShowAddPartyModal}/>}
+            {tabView === 0 && <SummaryView
+                itemsWithCalculations={itemsWithCalculations}
+                taxInput={taxInput}
+                taxInputType={taxInputType}
+                tipInput={tipInput}
+                tipAfterTax={tipAfterTax}
+                payor={payor}
+                partyInformation={partyInformation}
+                parties={parties}
+                handleShowAddPartyModal={handleShowAddPartyModal}/>}
             {speedDialModal === "setTip" && <SetTip
                 showModal={showModal}
                 toggleModal={toggleModal}
                 setTipInput={setTipInput}
                 tipAfterTax={tipAfterTax}
-                setTipAfterTax={setTipAfterTax}/>}
+                setTipAfterTax={setTipAfterTax}
+                tipInput={tipInput}/>}
             {speedDialModal === "setTax" && <SetTax
                 showModal={showModal}
                 toggleModal={toggleModal}
                 setTaxInput={setTaxInput}
-                setTaxInputType={setTaxInputType}/>}
+                setTaxInputType={setTaxInputType}
+                taxInput={taxInput}
+                taxInputType={taxInputType}/>}
             {speedDialModal === "setPayor" && <SetPayor
                 parties={tempParties}
                 showModal={showModal} 
                 toggleModal={toggleModal}
-                setPayor={setPayor} />}
+                setPayor={setPayor}
+                payor={payor} />}
             {speedDialModal === "addItem" && <AddItem
                 parties={tempParties} 
                 showModal={showModal} 

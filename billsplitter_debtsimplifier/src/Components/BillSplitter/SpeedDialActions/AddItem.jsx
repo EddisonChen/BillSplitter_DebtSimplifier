@@ -5,6 +5,12 @@ import Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button";
 import Alert from "../../../MiniComponents/MuiAlert/MuiAlert";
 import { v4 as uuidv4 } from 'uuid';
+import AddIcon from '@mui/icons-material/Add';
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
 
 // fix success alert message
 // fix uncontroll price input
@@ -25,8 +31,6 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
     //     setAlertMsg();
     // }, [items]);
 
-    console.log(editItemMode, itemId)
-
     useEffect(() => {
         if (editItemMode) {
             for (let i=0; i<items.length; i++) {
@@ -42,7 +46,7 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
     }, [editItemMode, itemId, items])
 
     const handleQuantityOnChange = (event) => {
-        setQuantity(Number(event.target.value));
+        setQuantity(event.target.value);
     }
 
     const handleQuantityOnBlur = (event) => {
@@ -59,7 +63,7 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
         if (event.target.name === "itemName") {
             setItemName(event.target.value);
         } else if (event.target.name === "itemCost") {
-            setItemCost(Number(event.target.value));
+            setItemCost(event.target.value);
         }
     }
 
@@ -84,27 +88,30 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
     // Generates checkboxes for the parties available
     const involvedPartiesCheckboxes = parties.map((party) => (
         <div key={party}>
-            <input type="checkbox" value={party} onChange={addPartyToItem} checked={involvedParties.includes(party) ? true : false}/><label>{party}</label>
+            <FormControlLabel control={<Checkbox/>} value={party} onChange={addPartyToItem} checked={involvedParties.includes(party) ? true : false} label={party}/>
         </div>
     ));
 
 
     const handleSubmit = () => {
 
+        const numItemCost = Number(itemCost);
+        const numQuantity = Number(quantity);
+
         // Creates item object
         if (!editItemMode) {
             const itemObject = {
                 itemId: uuidv4(),
                 itemName: itemName,
-                itemCost: itemCost*quantity,
+                itemCost: numItemCost*numQuantity,
                 involvedParties: involvedParties,
                 taxAmount: 0,
                 tipAmount: 0,
                 totalCost: 0,
                 taxExempt: taxExempt,
-                quantity: quantity,
+                quantity: numQuantity,
                 singleItemValues: {
-                    itemCost: itemCost,
+                    itemCost: numItemCost,
                     taxAmount: 0,
                     tipAmount: 0,
                     totalCost: 0,
@@ -116,12 +123,12 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
             for (let i=0; i<tempItems.length; i++) {
                 if (tempItems[i].itemId === itemId) {
                     tempItems[i].itemName = itemName;
-                    tempItems[i].itemCost = itemCost*quantity;
+                    tempItems[i].itemCost = numItemCost*numQuantity;
                     tempItems[i].involvedParties = involvedParties;
                     tempItems[i].taxAmount = tempItems[i].tipAmount = tempItems[i].totalCost = 0;
                     tempItems[i].taxExempt = taxExempt;
-                    tempItems[i].quantity = quantity;
-                    tempItems[i].singleItemValues.itemCost = itemCost;
+                    tempItems[i].quantity = numQuantity;
+                    tempItems[i].singleItemValues.itemCost = numItemCost;
                     tempItems[i].singleItemValues.taxAmount = tempItems[i].singleItemValues.tipAmount = tempItems[i].singleItemValues.totalCost = 0;
                 }
             }
@@ -157,6 +164,10 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
             setAlertMsg("Item submitted successfully!");
             setAlertStatus("success");
         }
+        setTimeout(()=> {
+            setAlertMsg();
+            setAlertStatus();
+        }, "5000")
     }
 
     const style = {
@@ -182,15 +193,17 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {editItemMode ? 'Edit Item' : 'Add Item'}
                 </Typography>
-                <form>
-                    <input type="text" placeholder="Item Name" name="itemName" onChange={handleItemInput} value={itemName}></input>
-                    <input type="number" placeholder="Item Cost" name="itemCost" onChange={handleItemInput} value={itemCost}></input>
-                    <input type="checkbox" name="taxExemptCheckbox" onChange={handleTaxExempt} checked={taxExempt}></input><label>Tax Exempt?</label>
-                    <input type="number" onChange={handleQuantityOnChange} onBlur={handleQuantityOnBlur} name="quantity" value={quantity}></input><label>Item Quantity</label>
-                    <p>Who was included in this item?</p>
+                <FormControl>
+                    <FormLabel>Item Name</FormLabel>
+                    <TextField type="text" variant="outlined" size="small" placeholder="Item Name" name="itemName" onChange={handleItemInput} value={itemName}></TextField>
+                    <FormLabel>Item Cost</FormLabel>
+                    <TextField type="number" variant="outlined" size="small" placeholder="Item Cost" name="itemCost" onChange={handleItemInput} value={itemCost}></TextField>                    <FormLabel>Quantity</FormLabel>
+                    <TextField type="number" variant="outlined" size="small" onChange={handleQuantityOnChange} onBlur={handleQuantityOnBlur} name="quantity" value={quantity}></TextField>
+                    <FormControlLabel control={<Checkbox/>} name="taxExemptCheckbox" onChange={handleTaxExempt} checked={taxExempt} label="Tax Exempt"/>
+                    <FormLabel>Who was included in this item?</FormLabel>
                     {involvedPartiesCheckboxes}
-                    <Button type="submit" onClick={validateInputs} variant="outlined">Submit Item</Button>
-                </form>
+                    <Button type="submit" onClick={validateInputs} variant="outlined" endIcon={<AddIcon/>}>Submit</Button>
+                </FormControl>
                 {alertMsg && <Alert
                 severity={alertStatus}
                 // title={alertStatus}

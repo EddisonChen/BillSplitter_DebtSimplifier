@@ -7,8 +7,10 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import AddItem from '../SpeedDialActions/AddItem';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import IconButton from '@mui/material/IconButton';
 
-const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
+const ItemsView = ({itemsWithCalculations, tempParties, items, setItems, parties, handleShowAddPartyModal}) => {
 
     const [editItemMode, setEditItemMode] = useState(false);
     const [editItemId, setEditItemId] = useState('');
@@ -53,7 +55,7 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
                         </TableCell>
                     </TableRow>
                 </TableBody>
-                {editItemMode && editItemId == item.itemId && <AddItem
+                {editItemMode && editItemId === item.itemId && <AddItem
                     editItemMode={editItemMode}
                     parties={tempParties}
                     toggleModal={toggleEditMode}
@@ -70,7 +72,11 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems}) => {
 
     return (
         <div>
-            <h3 className="head">Item Details</h3>
+            <div className="tab-header">
+                <h3 className="head">Item Details</h3>
+                 {parties === undefined && 
+                <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}>Add Party</Button>}
+            </div>
             <TableContainer component={Paper}>
                 {mappedItems}
             </TableContainer>

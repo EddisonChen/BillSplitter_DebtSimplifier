@@ -6,3 +6,14 @@
     border: 1px solid black;
 }
 
+.tab-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: 2px solid black;
+}
+
+.add-temp-party-button {
+    margin: 2px;
+    border: 2px solid black
+}

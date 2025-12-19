@@ -4,7 +4,7 @@ import BillSplitter from './Components/BillSplitter/BillSplitter';
 import MuiAlert from './MiniComponents/MuiAlert/MuiAlert';
 
 function App() {
-
+  const parties = ["Stacey", "Blastoise"]
   return (
     <div>
       <h1 className="head">Bean Counter</h1>

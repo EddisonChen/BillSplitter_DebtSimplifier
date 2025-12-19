@@ -1,8 +1,13 @@
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
-const SetPayor = ({parties, showModal, toggleModal, setPayor}) => {
+const SetPayor = ({parties, showModal, toggleModal, setPayor, payor}) => {
 
     const handlePayor = (event) => {
         setPayor(event.target.value);
@@ -25,17 +30,17 @@ const SetPayor = ({parties, showModal, toggleModal, setPayor}) => {
             open={showModal}
             onClose={toggleModal}>
             <Box sx={style}>
-                <Typography>
-                    Who paid this bill?
-                </Typography>
-                <select onChange={(event) => {
-                    handlePayor(event);
-                    toggleModal();}} defaultValue="">
-                <option disabled="disabled" value="">--Select Payor--</option>
-                {parties.map((party) => (
-                    <option value={party} key={party}>{party}</option>
-                ))}
-            </select>
+                <FormControl size="small" sx={{ m: 1, minWidth: 120 }}>
+                    <FormLabel>Who paid this bill?</FormLabel>
+                    <Select autowidth="true" defaultValue={payor || ""} onChange={(event) => {
+                        handlePayor(event);
+                        toggleModal();}}>
+                        {parties.map((party) => (
+                            <MenuItem value={party} key={party}>{party}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+               
             </Box>
         </Modal>
     )

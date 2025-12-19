@@ -2,15 +2,30 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import AddIcon from '@mui/icons-material/Add';
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import FormLabel from "@mui/material/FormLabel";
+import { useState, useEffect } from "react";
 
-const SetTip = ({showModal, toggleModal, setTipInput, tipAfterTax, setTipAfterTax}) => {
+const SetTip = ({showModal, toggleModal, setTipInput, tipAfterTax, setTipAfterTax, tipInput}) => {
+
+    const [tempTipInput, setTempTipInput] = useState(tipInput);
+    const [tempTipAfterTax, setTempTipAfterTax] = useState(tipAfterTax);
 
     const handleTipAfterTax = () => {
-        setTipAfterTax(!tipAfterTax);
+        setTempTipAfterTax(!tipAfterTax);
     }
 
     const handleTipInput = (event) => {
-        setTipInput(Number(event.target.value)/100);
+        setTempTipInput(event.target.value);
+    }
+
+    const handleSubmitTip = () => {
+        setTipInput(Number(tempTipInput/100));
+        setTipAfterTax(tempTipAfterTax);
     }
 
     const style = {
@@ -31,16 +46,16 @@ const SetTip = ({showModal, toggleModal, setTipInput, tipAfterTax, setTipAfterTa
             onClose={toggleModal}>
             
             <Box sx={style}>
-                <Typography>
-                    Set Tax
-                </Typography>
-                <form>
-                    <input type="number" placeholder="Tip %" onChange={handleTipInput}></input>
-                    <input type="checkbox" onChange={handleTipAfterTax}></input><label>Tip After Tax?</label>
-                    <Button type="submit" onClick={toggleModal} variant="outlined">Submit</Button>        
-                </form>
+                <FormControl>
+                    <FormLabel>Set Tip</FormLabel>
+                    <TextField type="number" placeholder="Tip %" variant="outlined" size="small" value={tempTipInput} onChange={handleTipInput}></TextField>
+                    <FormControlLabel control={<Checkbox/>} onChange={handleTipAfterTax} label="Tip Applied After Tax?" checked={tempTipAfterTax}/>
+                    <Button type="submit" onClick={(() => {
+                        handleSubmitTip();
+                        toggleModal();
+                    })} variant="outlined" endIcon={<AddIcon/>}>Submit</Button>        
+                </FormControl>
             </Box>
-
         </Modal>
     )
 }

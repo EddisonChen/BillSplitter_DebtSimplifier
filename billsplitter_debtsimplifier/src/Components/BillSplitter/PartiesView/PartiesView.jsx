@@ -5,8 +5,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
+import Button from '@mui/material/Button';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import IconButton from '@mui/material/IconButton';
 
-const PartiesView = ({partyInformation}) => {
+const PartiesView = ({partyInformation, parties, handleShowAddPartyModal}) => {
 
     const [expand, setExpand] = useState([]);
 
@@ -80,7 +83,11 @@ const PartiesView = ({partyInformation}) => {
 
     return (
         <div>
-            <h3 className="head">Party Details</h3>
+            <div className="tab-header">
+                <h3 className="head">Party Details</h3>
+                  {parties === undefined && 
+                    <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}>Add Party</Button>}
+            </div>
             <TableContainer component={Paper}>
                 {mappedParties}
             </TableContainer>
