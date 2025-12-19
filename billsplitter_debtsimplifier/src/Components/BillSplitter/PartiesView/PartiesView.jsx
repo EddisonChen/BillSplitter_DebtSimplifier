@@ -28,57 +28,68 @@ const PartiesView = ({partyInformation, parties, handleShowAddPartyModal}) => {
 
     const mappedParties = partyInformation.map((party) => (
         (expand.includes(party.trxId) ? 
-            (<Table key={party.trxId} onClick={(()=> {
+            (<TableContainer component={Paper} key={party.trxId} onClick={(()=> {
                 handleShrink(party.trxId);
             })}>
+                <Table sx={{
+                    tableLayout: 'fixed',
+                    width: '100%',
+                }}>
                     <TableBody>
                         <TableRow>
-                            <TableCell align="left">Name:</TableCell>
-                            <TableCell align="left">{party.debtor}</TableCell>
+                            <TableCell align="left" className="table-header">Name:</TableCell>
+                            <TableCell align="left" className="table-info">{party.debtor}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell align="left">Base:</TableCell>
-                            <TableCell align="left">${parseFloat(party.baseAmount.toFixed(2))}</TableCell>
+                            <TableCell align="left" className="table-header">Base:</TableCell>
+                            <TableCell align="left" className="table-info">${parseFloat(party.baseAmount.toFixed(2))}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell align="left">Tax:</TableCell>
-                            <TableCell align="left">${parseFloat(party.taxAmount.toFixed(2))}</TableCell>
+                            <TableCell align="left" className="table-header">Tax:</TableCell>
+                            <TableCell align="left" className="table-info">${parseFloat(party.taxAmount.toFixed(2))}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell align="left">Tip:</TableCell>
-                            <TableCell align="left">${parseFloat(party.tipAmount.toFixed(2))}</TableCell>
+                            <TableCell align="left" className="table-header">Tip:</TableCell>
+                            <TableCell align="left" className="table-info">${parseFloat(party.tipAmount.toFixed(2))}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell align="left">Total:</TableCell>
-                            <TableCell align="left">${parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
+                            <TableCell align="left" className="table-header">Total:</TableCell>
+                            <TableCell align="left" className="table-info">${parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
                         </TableRow>
-                        <TableRow>
-                            <TableCell align="left">Items:</TableCell>
+                        <TableRow className="bottom-table-row">
+                            <TableCell align="left" className="table-header">Items:</TableCell>
                             <TableCell align="left">
                                 <ul>
                                     {party.items.map((item)=> (
-                                        <li key={item.itemId}>{item.itemName} ({item.quantity}) </li>
+                                        <li className="table-info" key={item.itemId}>{item.itemName} ({item.quantity}) </li>
                                     ))}
                                 </ul>
                             </TableCell>
                         </TableRow>
                     </TableBody>
-                </Table>)
+                </Table>
+            </TableContainer>)
             : 
-            (<Table key={party.trxId} onClick={(()=> {
+            (<TableContainer component={Paper} key={party.trxId} onClick={(()=> {
                 handleExpand(party.trxId);
-            })}>
+            })}
+            >
+                <Table sx={{
+                    tableLayout: 'fixed',
+                    width: '100%',
+                }}>
                     <TableBody>
                         <TableRow>
-                            <TableCell align="left">Name:</TableCell>
-                            <TableCell align="left">{party.debtor}</TableCell>
+                            <TableCell align="left" className="table-header">Name:</TableCell>
+                            <TableCell align="left" className="table-info">{party.debtor}</TableCell>
                         </TableRow>
-                        <TableRow>
-                            <TableCell align="left">Final Amount Owed:</TableCell>
-                            <TableCell align="left">${parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
+                        <TableRow className="bottom-table-row">
+                            <TableCell align="left" className="table-header">Final Amount Owed:</TableCell>
+                            <TableCell align="left" className="table-info">${parseFloat(party.totalAmountOwed.toFixed(2))}</TableCell>
                         </TableRow>
                     </TableBody>
-                </Table>)
+                </Table>
+            </TableContainer>)
     )));
 
     return (
@@ -86,11 +97,11 @@ const PartiesView = ({partyInformation, parties, handleShowAddPartyModal}) => {
             <div className="tab-header">
                 <h3 className="head">Party Details</h3>
                   {parties === undefined && 
-                    <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}>Add Party</Button>}
+                    <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}
+                        sx={{margin: "12px 0px 12px 0px"}}
+                    >Add Party</Button>}
             </div>
-            <TableContainer component={Paper}>
-                {mappedParties}
-            </TableContainer>
+            {mappedParties}
         </div>
         
     )

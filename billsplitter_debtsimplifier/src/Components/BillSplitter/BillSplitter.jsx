@@ -301,7 +301,7 @@ const BillSplitter = ({parties}) => {
                 position: "fixed",
                 bottom: 80,   
                 right: 16,
-                zIndex: 9999, 
+                zIndex: theme => theme.zIndex.modal + 1, 
                 
             }}
             >

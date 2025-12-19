@@ -29,16 +29,18 @@ const SetTax = ({showModal, toggleModal, setTaxInput, setTaxInputType, taxInput,
         setTaxInputType(tempTaxInputType);
     }
 
-    const style = {
+   const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '80%',
+        width: '65%',
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        borderRadius: "15px",
         boxShadow: 24,
         p: 4,
+        overflowY: 'auto',
+        maxHeight: '85vh'
     };
 
     return (
@@ -46,7 +48,7 @@ const SetTax = ({showModal, toggleModal, setTaxInput, setTaxInputType, taxInput,
             open={showModal}
             onClose={toggleModal}>
             
-            <Box sx={style}>
+            <Box sx={style} className="modal-box">
                 <FormControl>
                     <FormLabel>Set Tax</FormLabel>
                     <TextField type="number" placeholder="Tax" variant="outlined" size="small" onChange={handleTaxInput} value={tempTaxInput}></TextField>

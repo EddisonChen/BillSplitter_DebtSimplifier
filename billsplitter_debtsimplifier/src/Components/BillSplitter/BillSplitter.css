@@ -10,14 +10,22 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    border: 2px solid black;
 }
 
-.add-temp-party-button {
-    margin: 2px;
-    border: 2px solid black
+.table-header.MuiTableCell-root {
+  font-weight: 530;
+  font-size: 15px;
 }
 
-/* .box {
-    border: 2px solid black;
-} */
+.table-info.MuiTableCell-root {
+    font-weight: 450;
+    font-size: 15px;
+}
+
+.bottom-table-row.MuiTableRow-root > td {
+    border-bottom: 2px solid grey;
+}
+
+.head {
+    font-size: 22px;
+}

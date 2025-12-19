@@ -7,7 +7,7 @@ function App() {
   const parties = ["Stacey", "Blastoise"]
   return (
     <div>
-      <h1 className="head">Bean Counter</h1>
+      <h1 className="big-head">Bean Counter</h1>
       <BillSplitter/>
     </div>
   );

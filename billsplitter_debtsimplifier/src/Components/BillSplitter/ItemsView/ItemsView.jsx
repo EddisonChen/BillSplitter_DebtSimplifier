@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import AddItem from '../SpeedDialActions/AddItem';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import IconButton from '@mui/material/IconButton';
+
 
 const ItemsView = ({itemsWithCalculations, tempParties, items, setItems, parties, handleShowAddPartyModal}) => {
 
@@ -23,33 +23,30 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems, parties
         setEditItemId(id)
     }
 
-    const handleRemoveItem = (event) => {
-        const id = event.target.value;
-        const updatedItems = items.filter(item => item.itemId !== id);
-        setItems(updatedItems);
-    }
-
     const mappedItems = itemsWithCalculations.map((item) => (
-        <div key={item.itemId} >
-            <Table >
+        <TableContainer component={Paper} key={item.itemId} >
+            <Table sx={{
+                    tableLayout: 'fixed',
+                    width: '100%',
+                }}>
                 <TableBody onClick={(()=> {
                     toggleEditMode();
                     handleItemId(item.itemId);
                 })}>
                     <TableRow >
-                        <TableCell align="left">Name (Quantity):</TableCell>
-                        <TableCell align="left">{item.itemName} ({item.quantity})</TableCell>
+                        <TableCell align="left" className="table-header">Name (Quantity):</TableCell>
+                        <TableCell align="left" className="table-info">{item.itemName} ({item.quantity})</TableCell>
                     </TableRow>
                     <TableRow >
-                        <TableCell align="left">Final Price:</TableCell>
-                        <TableCell align="left">${parseFloat(item.totalCost.toFixed(2))} {item.quantity > 1 && item.totalCost > 0 ? `($${parseFloat((item.singleItemValues.totalCost).toFixed(2))} per)`: null}</TableCell>
+                        <TableCell align="left" className="table-header">Final Price:</TableCell>
+                        <TableCell align="left" className="table-info">${parseFloat(item.totalCost.toFixed(2))} {item.quantity > 1 && item.totalCost > 0 ? `($${parseFloat((item.singleItemValues.totalCost).toFixed(2))} per)`: null}</TableCell>
                     </TableRow>
-                    <TableRow >
-                        <TableCell align="left">Split Between: </TableCell>
+                    <TableRow className="bottom-table-row">
+                        <TableCell align="left" className="table-header">Split Between: </TableCell>
                         <TableCell align="left">
                             <ul>
                                 {item.involvedParties.map((party)=> (
-                                    <li key={party}>{party}</li>
+                                    <li className="table-info" key={party}>{party}</li>
                                 ))}
                             </ul>
                         </TableCell>
@@ -65,8 +62,7 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems, parties
                     itemId={item.itemId}
                     />}
             </Table>
-            <Button variant="outlined" onClick={handleRemoveItem} value={item.itemId}>Delete Item</Button>
-        </div>
+        </TableContainer>
         
     ));
 
@@ -75,11 +71,11 @@ const ItemsView = ({itemsWithCalculations, tempParties, items, setItems, parties
             <div className="tab-header">
                 <h3 className="head">Item Details</h3>
                  {parties === undefined && 
-                <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}>Add Party</Button>}
+                <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}
+                    sx={{margin: "12px 0px 12px 0px"}}
+                >Add Party</Button>}
             </div>
-            <TableContainer component={Paper}>
-                {mappedItems}
-            </TableContainer>
+            {mappedItems}
         </div>
     )
 }

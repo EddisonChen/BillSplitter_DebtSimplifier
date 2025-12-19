@@ -48,7 +48,7 @@ const SummaryView = ({itemsWithCalculations, taxInput, taxInputType, tipInput, t
             if (taxInputType === "percentage") {
                 setTaxDisplay(`${parseFloat(taxInput.toFixed(1))}%, $${parseFloat(sumTaxAmount.toFixed(2))}`);
             } else {
-                const calculatedTaxPercentage = parseFloat((sumTaxAmount/sumTaxableItems).toFixed(1));
+                const calculatedTaxPercentage = parseFloat(((sumTaxAmount/sumTaxableItems)*100).toFixed(1));
                 setTaxDisplay(`${Number.isFinite(calculatedTaxPercentage) ? calculatedTaxPercentage : 0}%, $${parseFloat(taxInput.toFixed(2))}`);
             }
 
@@ -65,30 +65,35 @@ return (
         <div className="tab-header">
             <h3 className="head">Bill Summary</h3>
             {parties === undefined && 
-                <Button aria-label="add party" className='add-temp-party-button' variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}>Add Party</Button>}
+                <Button aria-label="add party" variant="contained" size="medium" onClick={handleShowAddPartyModal} endIcon={<PersonAddIcon/>}
+                    sx={{margin: "12px 0px 12px 0px"}}
+                >Add Party</Button>}
         </div>
         <TableContainer component={Paper}>
-            <Table aria-label="summary of costs table">
+            <Table aria-label="summary of costs table" sx={{
+                    tableLayout: 'fixed',
+                    width: '100%',
+                }}>
                 <TableBody>
                     <TableRow>
-                        <TableCell align="left">Total Base Cost:</TableCell>
-                        <TableCell align="left">{totalBaseCostDisplay}</TableCell>
+                        <TableCell align="left" className="table-header">Total Base Cost:</TableCell>
+                        <TableCell align="left" className="table-info">{totalBaseCostDisplay}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell align="left">Tax %, Amount:</TableCell>
-                        <TableCell align="left">{taxDisplay}</TableCell>
+                        <TableCell align="left" className="table-header">Tax %, Amount:</TableCell>
+                        <TableCell align="left" className="table-info">{taxDisplay}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell align="left">Tip %, Amount:</TableCell>
-                        <TableCell align="left">{tipDisplay}</TableCell>
+                        <TableCell align="left" className="table-header">Tip %, Amount:</TableCell>
+                        <TableCell align="left" className="table-info">{tipDisplay}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell align="left">Final Price:</TableCell>
-                        <TableCell align="left">{finalPriceDisplay}</TableCell>
+                        <TableCell align="left" className="table-header">Final Price:</TableCell>
+                        <TableCell align="left" className="table-info">{finalPriceDisplay}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell align="left">Payor:</TableCell>
-                        <TableCell align="left">{payor}</TableCell>
+                        <TableCell align="left" className="table-header">Payor:</TableCell>
+                        <TableCell align="left" className="table-info">{payor}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

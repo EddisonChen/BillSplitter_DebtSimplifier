@@ -11,6 +11,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // fix success alert message
 // fix uncontroll price input
@@ -26,10 +28,11 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
     const [alertStatus, setAlertStatus] = useState();
     const [quantity, setQuantity] = useState(1);
 
-    // useEffect(()=> {
-    //     setAlertStatus();
-    //     setAlertMsg();
-    // }, [items]);
+    const handleRemoveItem = () => {
+        const updatedItems = items.filter(item => item.itemId !== itemId);
+        setItems(updatedItems);
+        toggleModal();
+    }
 
     useEffect(() => {
         if (editItemMode) {
@@ -175,11 +178,13 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '80%',
+        width: '65%',
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        borderRadius: "15px",
         boxShadow: 24,
         p: 4,
+        overflowY: 'auto',
+        maxHeight: '85vh'
     };
 
     return(
@@ -203,6 +208,7 @@ const AddItem = ({editItemMode, parties, toggleModal, showModal, items, setItems
                     <FormLabel>Who was included in this item?</FormLabel>
                     {involvedPartiesCheckboxes}
                     <Button type="submit" onClick={validateInputs} variant="outlined" endIcon={<AddIcon/>}>Submit</Button>
+                    {editItemMode && itemId && <IconButton aria-label="delete item button" onClick={handleRemoveItem}><DeleteIcon/></IconButton>}
                 </FormControl>
                 {alertMsg && <Alert
                 severity={alertStatus}
