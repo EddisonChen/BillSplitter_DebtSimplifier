@@ -5,8 +5,6 @@ import SetTax from "./SpeedDialActions/SetTax";
 import SetTip from "./SpeedDialActions/SetTip";
 import AddTempParty from "./SpeedDialActions/AddTempParty";
 import { v4 as uuidv4 } from 'uuid';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -24,6 +22,12 @@ import json from '../../OCRsample.json'
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { z } from "zod";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Paper from "@mui/material/Paper";
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import PeopleIcon from '@mui/icons-material/People';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 //Mui Tabs, Mui Speed Dial
 // receipt scanner - involves: sending picture to backend, 
@@ -292,9 +296,17 @@ const BillSplitter = ({parties}) => {
                 toggleModal={toggleModal}
                 items={items}
                 setItems={setItems}/>}
-            {tempParties.length > 0 && <Box className="box" sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+            {tempParties.length > 0 && <Box className="box" 
+            sx={{ 
+                position: "fixed",
+                bottom: 80,   
+                right: 16,
+                zIndex: 9999, 
+                
+            }}
+            >
                 <SpeedDial
-                    sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                    // sx={{ position: 'absolute', mt: 3, hiefgh }}
                     className="speed-dial"
                     ariaLabel="speeddial options"
                     icon={<SpeedDialIcon/>}>
@@ -313,21 +325,20 @@ const BillSplitter = ({parties}) => {
                     ))}
                 </SpeedDial>
             </Box>}
-            <Box className="add-item-tabs">
-                <Tabs
-                    value={tabView} // indicates which tab is selected
-                    variant="fullWidth"
-                    scrollButtons="auto"
-                    aria-label="add items tabs"
-                    textColor="secondary"
-                    indicatorColor="secondary"
-                    onChange={handleTabView}
-                    centered>
-                    <Tab label="summary" value={0}/>
-                    <Tab label="parties" value={1}/>
-                    <Tab label="items" value={2}/>
-                </Tabs>
-            </Box>
+            <Paper className="add-item-tabs" sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+                <BottomNavigation
+                    showLabels
+                    value={tabView}
+                    onChange={handleTabView}>
+                    <BottomNavigationAction 
+                        label="SUMMARY" value={0} icon={<SummarizeIcon/>}/>
+                    <BottomNavigationAction
+                        label="PARTIES" value={1} icon={<PeopleIcon/>}/>
+                    <BottomNavigationAction
+                        label="ITEMS" value={2} icon={<ShoppingBagIcon/>}/>
+                </BottomNavigation>
+            </Paper>
+            
             
         </div>
     )

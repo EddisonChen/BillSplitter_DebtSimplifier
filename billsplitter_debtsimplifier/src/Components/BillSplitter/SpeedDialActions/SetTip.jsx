@@ -47,7 +47,7 @@ const SetTip = ({showModal, toggleModal, setTipInput, tipAfterTax, setTipAfterTa
             
             <Box sx={style}>
                 <FormControl>
-                    <FormLabel>Set Tip</FormLabel>
+                    <FormLabel>Set Tip %</FormLabel>
                     <TextField type="number" placeholder="Tip %" variant="outlined" size="small" value={tempTipInput} onChange={handleTipInput}></TextField>
                     <FormControlLabel control={<Checkbox/>} onChange={handleTipAfterTax} label="Tip Applied After Tax?" checked={tempTipAfterTax}/>
                     <Button type="submit" onClick={(() => {

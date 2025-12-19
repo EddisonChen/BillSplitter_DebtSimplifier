@@ -1,10 +1,10 @@
-.add-item-tabs {
+/* .add-item-tabs {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     border: 1px solid black;
-}
+} */
 
 .tab-header {
     display: flex;
@@ -17,3 +17,7 @@
     margin: 2px;
     border: 2px solid black
 }
+
+/* .box {
+    border: 2px solid black;
+} */
